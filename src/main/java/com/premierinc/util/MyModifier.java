@@ -1,30 +1,20 @@
 package com.premierinc.util;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.base.MyBase;
-import com.premierinc.base.MyDecisionBase;
 import java.util.function.Predicate;
 
 /**
  *
  */
-//public class MyLogic<T extends Comparable<T>> extends MyBase {
-public class MyLogic<T extends Comparable<T>> extends MyDecisionBase {
+public class MyModifier<T extends Comparable<T>> extends MyBase {
 
-	Predicate<MyLogic> predicate;
-
-	@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
+	Predicate<MyModifier> predicate;
 	private T permValue = null;
-
-	@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 	private T tempValue = null;
-
-	//@JsonProperty("operator")
 	private OperatorEnum operator;
 	private boolean lastResult;
-	private MyLogic branchA = null;
-	private MyLogic branchB = null;
+	private MyModifier branchA = null;
+	private MyModifier branchB = null;
 
 	public T getPermValue() {
 		return permValue;
@@ -34,25 +24,17 @@ public class MyLogic<T extends Comparable<T>> extends MyDecisionBase {
 		return tempValue;
 	}
 
-	public void setPermValue(T permValue) {
-		this.permValue = permValue;
-	}
-
-	public void setOperator(OperatorEnum operator) {
-		this.operator = operator;
-	}
-
-	public MyLogic<T> setTempValue(T tempValue) {
+	public MyModifier<T> setTempValue(T tempValue) {
 		this.tempValue = tempValue;
 		return this;
 	}
 
-	public MyLogic<T> setBranchA(final MyLogic branchA) {
+	public MyModifier<T> setBranchA(final MyModifier branchA) {
 		this.branchA = branchA;
 		return this;
 	}
 
-	public MyLogic<T> setBranchB(MyLogic branchB) {
+	public MyModifier<T> setBranchB(MyModifier branchB) {
 		this.branchB = branchB;
 		return this;
 	}
@@ -109,7 +91,7 @@ public class MyLogic<T extends Comparable<T>> extends MyDecisionBase {
 	 */
 	public static class Builder<T extends Comparable<T>> {
 
-		private MyLogic myLogic = new MyLogic<T>();
+		private MyModifier myLogic = new MyModifier<T>();
 
 		public final Builder setPermValue(final int inValue) {
 			this.myLogic.permValue = inValue;
@@ -121,12 +103,12 @@ public class MyLogic<T extends Comparable<T>> extends MyDecisionBase {
 			return this;
 		}
 
-		public final Builder setBranchA(final MyLogic branchA) {
+		public final Builder setBranchA(final MyModifier branchA) {
 			this.myLogic.branchA = branchA;
 			return this;
 		}
 
-		public Builder setBranchB(MyLogic branchB) {
+		public Builder setBranchB(MyModifier branchB) {
 			this.myLogic.branchB = branchB;
 			return this;
 		}
@@ -134,7 +116,7 @@ public class MyLogic<T extends Comparable<T>> extends MyDecisionBase {
 		public final Builder setOperator(final OperatorEnum inOperator) {
 			this.myLogic.operator = inOperator;
 
-			Predicate<MyLogic> predicate;
+			Predicate<MyModifier> predicate;
 
 			switch (inOperator) {
 			case LT:
@@ -192,7 +174,7 @@ public class MyLogic<T extends Comparable<T>> extends MyDecisionBase {
 			}
 		}
 
-		public final MyLogic<T> build() {
+		public final MyModifier<T> build() {
 			validateBuild();
 			return this.myLogic;
 		}

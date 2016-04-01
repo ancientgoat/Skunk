@@ -1,12 +1,23 @@
 {
-  "MyBranch": {
-	"operator": "GT",
-	"value": 1
-  },
-  "MyOr": {
-	"MyBranch": {
-	  "operator": "LT",
-	  "value": 10
-	}
+  "decisionList": {
+	"name": "test01",
+	"rules": [
+	  {
+		"type": "logic",
+		"description": "SCr",
+		"operator": "GT",
+		"perm_value": 1.33
+	  },
+	  {
+		"type": "logic",
+		"operator": "OR"
+	  },
+	  {
+		"type": "logic",
+		"description": "X",
+		"operator": "LT",
+		"perm_value": 10
+	  }
+	]
   }
 }
