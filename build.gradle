@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+mainClassName = "com.premierinc.SrtApplication"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    // maven { url "someUrl" }
+}
+
+dependencies {
+    // compile group: 'com.nurkiewicz.jdbcrepository', name: 'jdbcrepository', version: '0.4'
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.2.5.RELEASE'
+    //compile group: 'org.springframework.boot', name: 'spring-boot-starter-rest', version: '1.2.5.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.2.5.RELEASE'
+
+    //compile project(':service')
+
+    //testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.testng', name: 'testng', version: '6.9.10'
+}
+
+//
+// Checking Code Style
+//
+//checkstyle {
+//    toolVersion = "6.0"
+//}
+
+//
+// We use the Gradle Wrapper
+//
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}

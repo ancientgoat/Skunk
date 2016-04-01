@@ -1,0 +1,12 @@
+{
+  "MyBranch": {
+	"operator": "GT",
+	"value": 1
+  },
+  "MyOr": {
+	"MyBranch": {
+	  "operator": "LT",
+	  "value": 10
+	}
+  }
+}
