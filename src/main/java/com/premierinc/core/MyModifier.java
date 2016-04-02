@@ -1,12 +1,16 @@
-package com.premierinc.util;
+package com.premierinc.core;
 
-import com.premierinc.base.MyBase;
+import com.premierinc.base.MyDecisionBase;
+import com.premierinc.enumeration.LogicType;
+import com.premierinc.util.MyLogicExecuter;
+import com.premierinc.util.OperatorEnum;
+
 import java.util.function.Predicate;
 
 /**
  *
  */
-public class MyModifier<T extends Comparable<T>> extends MyBase {
+public class MyModifier<T extends Comparable<T>> extends MyDecisionBase {
 
 	Predicate<MyModifier> predicate;
 	private T permValue = null;
@@ -15,6 +19,10 @@ public class MyModifier<T extends Comparable<T>> extends MyBase {
 	private boolean lastResult;
 	private MyModifier branchA = null;
 	private MyModifier branchB = null;
+
+	public LogicType getLogicType() {
+		return LogicType.MODIFY;
+	}
 
 	public T getPermValue() {
 		return permValue;
