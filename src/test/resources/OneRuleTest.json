@@ -1,0 +1,17 @@
+{
+  "decisionList": {
+    "name": "test01",
+    "decisions": [
+      {
+        "type": "logic",
+        "identity": {
+          "name": "MILK",
+          "uom": "oz"
+        },
+        "description": "Amount of milk(M): true if M > 1.33 oz",
+        "operator": "GT",
+        "value": 1.33
+      }
+    ]
+  }
+}
