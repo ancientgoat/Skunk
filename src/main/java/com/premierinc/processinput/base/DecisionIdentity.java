@@ -3,7 +3,7 @@ package com.premierinc.processinput.base;
 /**
  *
  */
-public class RuleIdentity {
+public class DecisionIdentity {
 
   private String name;
   private String uom;

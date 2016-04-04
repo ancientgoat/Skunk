@@ -64,46 +64,11 @@ public class MySimpleTest {
       } catch (SkException e) {
         int i = 0;
       }
-      decisionRunner.execute();
+      decisionRunner.test();
 
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
     }
-  }
-
-  //@Test
-  public void testTest() {
-
-    final Integer firstValue = 1;
-
-    InpLogic<Integer> branch_01 = new InpLogic.Builder<>().setPermValue(firstValue).setOperator(OperatorEnum.GT)
-        .build();
-
-    InpLogic<Integer> branch_02 = new InpLogic.Builder<>().setPermValue(firstValue).setOperator(OperatorEnum.LT)
-        .build();
-
-    InpLogic<Boolean> branch_03 = new InpLogic.Builder<>().setBranchA(branch_01).setBranchB(branch_02).setOperator(
-        OperatorEnum.OR).build();
-
-    System.out.println(String.format("1 gt 1 : %s", branch_01.testFast(1)));
-    spacer();
-    System.out.println(String.format("1 gt 2 : %s", branch_01.testFast(2)));
-    spacer();
-    System.out.println(String.format("1 gt 3 : %s", branch_01.testFast(3)));
-    spacer();
-
-    System.out.println(String.format("1 lt 1 : %s", branch_02.testFast(1)));
-    spacer();
-    System.out.println(String.format("1 lt 2 : %s", branch_02.testFast(2)));
-    spacer();
-    System.out.println(String.format("1 lt 3 : %s", branch_02.testFast(3)));
-    spacer();
-
-    branch_01.setRightValue(4);
-    branch_02.setRightValue(14);
-    System.out.println(String.format("1,2,3: %s", branch_03.test()));
-    spacer();
-
   }
 
   public void spacer() {

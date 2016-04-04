@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.common.enumeration.InpType;
 import com.premierinc.common.exception.SkException;
 import com.premierinc.common.util.MyLogicExecuter;
-import com.premierinc.common.util.OperatorEnum;
+import com.premierinc.common.util.LogicOperatorEnum;
+import com.premierinc.processinput.base.DecisionIdentity;
 import com.premierinc.processinput.base.InpNodeBase;
-import com.premierinc.processinput.coreinf.SkTestable;
+import com.premierinc.processtree.decisioninf.SkLogicInf;
 
 import java.util.function.Predicate;
 
@@ -20,9 +21,9 @@ import java.util.function.Predicate;
  * operator and right side variable.
  */
 public class InpLogic<T extends Comparable<T>> extends InpNodeBase
-    implements SkTestable {
+    implements SkLogicInf {
 
-  Predicate<InpLogic> predicate;
+  private Predicate<InpLogic> predicate;
 
   /**
    * Hopefully someone was smart enough to give a decent description of our Logic bit.
@@ -38,7 +39,7 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase
   /**
    * Operator we are to apply to our logic bit.
    */
-  private OperatorEnum operator;
+  private LogicOperatorEnum operator;
 
   /**
    * This is the right side of the logic operation, a permanent value entered
@@ -46,6 +47,11 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase
    */
   @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
   private T rightValue = null;
+
+  /**
+   *
+   */
+  private DecisionIdentity identity;
 
   /**
    * The result of our logic when executed.
@@ -74,13 +80,14 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase
     return result;
   }
 
-  public OperatorEnum getOperator() {
+  public LogicOperatorEnum getOperator() {
     return operator;
   }
 
   public Predicate<InpLogic> getPredicate() {
     return predicate;
   }
+
 
   public final boolean testFast(final T inValue) {
     this.leftValue = inValue;
@@ -102,6 +109,11 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase
     return this.description;
   }
 
+  @Override
+  public DecisionIdentity getIdentity() {
+    return this.identity;
+  }
+
   /**
    *
    */
@@ -114,7 +126,7 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase
       return this;
     }
 
-    public final Builder setOperator(final OperatorEnum inOperator) {
+    public final Builder setOperator(final LogicOperatorEnum inOperator) {
       this.inpLogic.operator = inOperator;
       Predicate<InpLogic> predicate;
       switch (inOperator) {

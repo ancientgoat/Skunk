@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.common.util.JsonHelper;
 import com.premierinc.processinput.core.InpAndOr;
-import com.premierinc.processinput.core.InpDecisionGroup;
+import com.premierinc.processinput.core.InpGroup;
 import com.premierinc.processinput.core.InpLogic;
 
 /**
@@ -13,7 +13,7 @@ import com.premierinc.processinput.core.InpLogic;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({@JsonSubTypes.Type(value = InpLogic.class, name = "logic"),
     @JsonSubTypes.Type(value = InpAndOr.class, name = "andOr"),
-    @JsonSubTypes.Type(value = InpDecisionGroup.class, name = "decisionGroup")
+    @JsonSubTypes.Type(value = InpGroup.class, name = "group")
 })
 public abstract class InpNodeBase {
 
@@ -27,13 +27,13 @@ public abstract class InpNodeBase {
 }
 
 //  private String description;
-//  private RuleIdentity identity;
+//  private DecisionIdentity identity;
 //
 //  public String getDescription() {
 //    return description;
 //  }
 //
-//  public RuleIdentity getIdentity(){
+//  public DecisionIdentity getIdentity(){
 //    return this.identity;
 //  }
 //

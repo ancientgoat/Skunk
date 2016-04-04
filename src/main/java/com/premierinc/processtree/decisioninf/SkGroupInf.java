@@ -1,14 +1,14 @@
-package com.premierinc.processinput.coreinf;
+package com.premierinc.processtree.decisioninf;
 
 import com.premierinc.processinput.base.InpNodeBase;
-import com.premierinc.processinput.base.RuleIdentity;
 
 import java.util.List;
 
 /**
  *
  */
-public interface SkGroup {
+public interface SkGroupInf extends SkNodeInf {
   String getName();
+
   List<InpNodeBase> getDecisions();
 }

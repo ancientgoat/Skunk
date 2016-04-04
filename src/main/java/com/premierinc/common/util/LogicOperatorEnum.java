@@ -3,12 +3,10 @@ package com.premierinc.common.util;
 /**
  *
  */
-public enum OperatorEnum {
+public enum LogicOperatorEnum {
 	GT
 	, LT
 	, EQ
-	, OR
-	, AND
 	;
 
 }
