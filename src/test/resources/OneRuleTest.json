@@ -10,7 +10,7 @@
         },
         "description": "Amount of milk(M): true if M > 1.33 oz",
         "operator": "GT",
-        "value": 1.33
+        "value": 1.11
       }
     ]
   }

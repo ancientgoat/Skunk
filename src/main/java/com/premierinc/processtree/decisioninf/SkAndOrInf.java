@@ -1,11 +1,12 @@
 package com.premierinc.processtree.decisioninf;
 
-import com.premierinc.common.util.LogicOperatorEnum;
+import com.premierinc.common.enumeration.AndOrOperatorEnum;
 
 /**
  *
  */
 public interface SkAndOrInf extends SkNodeInf {
   SkAndOrInf add(final SkNodeInf inNode);
-  LogicOperatorEnum getOperator();
+  AndOrOperatorEnum getOperator();
+  boolean test();
 }

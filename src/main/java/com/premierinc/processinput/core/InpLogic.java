@@ -1,13 +1,13 @@
 package com.premierinc.processinput.core;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.common.enumeration.InpType;
+import com.premierinc.common.enumeration.LogicOperatorEnum;
 import com.premierinc.common.exception.SkException;
-import com.premierinc.common.util.MyLogicExecuter;
-import com.premierinc.common.util.LogicOperatorEnum;
+import com.premierinc.common.util.LogicExecuterHelper;
 import com.premierinc.processinput.base.DecisionIdentity;
 import com.premierinc.processinput.base.InpNodeBase;
-import com.premierinc.processtree.decisioninf.SkLogicInf;
 
 import java.util.function.Predicate;
 
@@ -20,22 +20,21 @@ import java.util.function.Predicate;
  * ex.  X < 17,  X is the variable that gets filled in later and "< 17" is the permanent
  * operator and right side variable.
  */
-public class InpLogic<T extends Comparable<T>> extends InpNodeBase
-    implements SkLogicInf {
+public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
 
-  private Predicate<InpLogic> predicate;
+  private Predicate<LeftRight> predicate;
 
   /**
    * Hopefully someone was smart enough to give a decent description of our Logic bit.
    */
   private String description;
 
-  /**
-   * This is the dynamic value entered on the fly, to use when executing this logic.
-   */
-  @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-  private T leftValue = null;
-
+  //  /**
+  //   * This is the dynamic value entered on the fly, to use when executing this logic.
+  //   */
+  //  @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+  //  private T leftValue = null;
+  //
   /**
    * Operator we are to apply to our logic bit.
    */
@@ -45,6 +44,7 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase
    * This is the right side of the logic operation, a permanent value entered
    * with the original formula.
    */
+  @JsonProperty("value")
   @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
   private T rightValue = null;
 
@@ -53,63 +53,61 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase
    */
   private DecisionIdentity identity;
 
-  /**
-   * The result of our logic when executed.
-   *
-   * @see #test
-   */
-  private boolean result;
+  @JsonProperty
+  public void setOperator(final LogicOperatorEnum inOperator) {
+    this.operator = inOperator;
+    this.predicate = LogicExecuterHelper.buildPredicate(inOperator);
+  }
+
 
   public InpType getInpType() {
     return InpType.LOGIC;
-  }
-
-  public T getLeftValue() {
-    return leftValue;
   }
 
   public T getRightValue() {
     return rightValue;
   }
 
-  public void setLeftValue(T leftValue) {
-    this.leftValue = leftValue;
-  }
-
-  public boolean getResult() {
-    return result;
-  }
-
   public LogicOperatorEnum getOperator() {
     return operator;
   }
 
-  public Predicate<InpLogic> getPredicate() {
+  public Predicate<LeftRight> getPredicate() {
     return predicate;
   }
 
+  /**
+   * This was made purposely as a thread safe method.
+   */
+  public final boolean test(final LeftRight inLeftRight) {
 
-  public final boolean testFast(final T inValue) {
-    this.leftValue = inValue;
-    return this.test();
+
+    boolean result = this.predicate.test(inLeftRight);
+    System.out.println(lastOutput(inLeftRight, result));
+    return result;
   }
 
-  public final boolean test() {
-    this.result = this.predicate.test(this);
-    System.out.println(lastOutput());
-    return this.result;
+  /**
+   * This was made purposely as a thread safe method.
+   */
+  public boolean test(final Comparable inLeftValue) {
+
+
+    final LeftRight leftRight = new LeftRight(inLeftValue, this.rightValue);
+    boolean result = this.predicate.test(leftRight);
+    System.out.println(lastOutput(leftRight, result));
+    return result;
   }
 
-  public final String lastOutput() {
-    return String.format("%s %s %s  Result:%s", this.leftValue, this.operator, this.rightValue, this.result);
+  public final String lastOutput(final LeftRight inLeftRight, final boolean inResult) {
+    return String.format("%s %s %s  Result:%s", inLeftRight.getLeftSide(), this.operator,
+        inLeftRight.getRightSide(), inResult);
   }
 
-  @Override
   public String getDescription() {
     return this.description;
   }
 
-  @Override
   public DecisionIdentity getIdentity() {
     return this.identity;
   }
@@ -117,55 +115,14 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase
   /**
    *
    */
-  public static class Builder<T extends Comparable<T>> {
-
-    private InpLogic inpLogic = new InpLogic<T>();
-
-    public final Builder setValue(final int inValue) {
-      this.inpLogic.rightValue = inValue;
-      return this;
+  private final void validateBuild() {
+    if (null == this.operator) {
+      throw new SkException(String.format("Missing operator.  Operator is required.\n%s",
+          this.dumpToJsonString()));
     }
-
-    public final Builder setOperator(final LogicOperatorEnum inOperator) {
-      this.inpLogic.operator = inOperator;
-      Predicate<InpLogic> predicate;
-      switch (inOperator) {
-        case LT:
-          predicate = p -> MyLogicExecuter.lt((T) p.leftValue, (T) p.rightValue);
-          break;
-        case GT:
-          predicate = p -> MyLogicExecuter.gt((T) p.leftValue, (T) p.rightValue);
-          break;
-        case EQ:
-          predicate = p -> MyLogicExecuter.eq((T) p.leftValue, (T) p.rightValue);
-          break;
-        default:
-          throw new IllegalStateException(String.format("No such Operator '%s'", inOperator));
-      }
-      this.inpLogic.predicate = predicate;
-      return this;
-    }
-
-    /**
-     *
-     */
-    private final void validateBuild() {
-      if (null == this.inpLogic.operator) {
-        throw new SkException(String.format("Missing operator.  Operator is required.\n%s",
-            this.inpLogic.dumpToJsonString()));
-      }
-      if (null == this.inpLogic.rightValue) {
-        throw new SkException(String.format("Missing value.  Value is required.\n%s",
-            this.inpLogic.dumpToJsonString()));
-      }
-    }
-
-    /**
-     *
-     */
-    public final InpLogic<T> build() {
-      validateBuild();
-      return this.inpLogic;
+    if (null == this.rightValue) {
+      throw new SkException(String.format("Missing value.  Value is required.\n%s",
+          this.dumpToJsonString()));
     }
   }
 }

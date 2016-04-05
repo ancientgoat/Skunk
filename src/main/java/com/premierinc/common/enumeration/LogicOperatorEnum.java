@@ -1,4 +1,4 @@
-package com.premierinc.common.util;
+package com.premierinc.common.enumeration;
 
 /**
  *

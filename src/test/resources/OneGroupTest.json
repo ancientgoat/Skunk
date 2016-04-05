@@ -10,7 +10,7 @@
         },
         "description": "Amount of milk < 100.03 oz",
         "operator": "LT",
-        "perm_value": 100.03
+        "value": 100.03
       },
       {
         "type": "andOr",
@@ -28,7 +28,7 @@
             },
             "description": "Amount of milk > 1.33 oz",
             "operator": "GT",
-            "perm_value": 1.33
+            "value": 1.33
           },
           {
             "type": "andOr",
@@ -42,7 +42,7 @@
             },
             "description": "Amount of orange juice < 10 oz",
             "operator": "LT",
-            "perm_value": 10
+            "value": 10
           }
         ]
       }

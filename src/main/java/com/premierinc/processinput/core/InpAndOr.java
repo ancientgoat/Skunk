@@ -1,21 +1,21 @@
 package com.premierinc.processinput.core;
 
-import com.premierinc.processinput.base.InpNodeBase;
 import com.premierinc.common.enumeration.InpType;
-import com.premierinc.common.util.LogicOperatorEnum;
+import com.premierinc.common.enumeration.AndOrOperatorEnum;
+import com.premierinc.processinput.base.InpNodeBase;
 
 /**
  *
  */
 public class InpAndOr extends InpNodeBase {
 
-  private LogicOperatorEnum operator;
+  private AndOrOperatorEnum operator;
 
   public InpType getLogicType() {
     return InpType.ANDOR;
   }
 
-  public LogicOperatorEnum getOperator() {
+  public AndOrOperatorEnum getOperator() {
     return operator;
   }
 
@@ -26,7 +26,7 @@ public class InpAndOr extends InpNodeBase {
 
     private InpAndOr myLogic = new InpAndOr();
 
-    public final Builder setOperator(final LogicOperatorEnum inOperator) {
+    public final Builder setOperator(final AndOrOperatorEnum inOperator) {
       this.myLogic.operator = inOperator;
       return this;
     }

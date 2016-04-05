@@ -11,4 +11,6 @@ public interface SkGroupInf extends SkNodeInf {
   String getName();
 
   List<InpNodeBase> getDecisions();
+
+  boolean test();
 }

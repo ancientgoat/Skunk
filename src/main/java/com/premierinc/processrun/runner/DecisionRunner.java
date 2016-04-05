@@ -1,12 +1,11 @@
 package com.premierinc.processrun.runner;
 
 import com.premierinc.common.exception.SkException;
-import com.premierinc.processinput.base.InpNodeBase;
 import com.premierinc.processrun.organize.DecisionOrganizer;
+import com.premierinc.processtree.decisioninf.SkLogicInf;
+import com.premierinc.processtree.decisioninf.SkNodeInf;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -14,12 +13,14 @@ import java.util.Map;
 public class DecisionRunner {
 
   private final DecisionOrganizer organizer;
-  private final Map<String, Comparable> valueMap = Collections.emptyMap();
-  private final Map<String, List<InpNodeBase>> identityNameMap;//new HashMap<>();
+  private final Map<String, Comparable> valueMap = new HashMap<>();
+  private final Map<String, Set<SkLogicInf>> identityNameMap;
+  private SkNodeInf topNode;
 
   public DecisionRunner(final DecisionOrganizer inOrganizer) {
     this.organizer = inOrganizer;
     this.identityNameMap = this.organizer.getIdentityNameMap();
+    this.topNode = this.organizer.getTopNode();
   }
 
   /**
@@ -42,15 +43,36 @@ public class DecisionRunner {
   /**
    *
    */
-  public boolean test() {
+  public boolean execute() {
+    // First, validate that we have the correct number of values
+    //  to input into this decision tree.
     validateValueMap();
 
-    return false;
+    // Next fill in the values.
+    fillDecisionTreeValues();
+
+    // Run the decision tree.
+    return this.topNode.test();
+  }
+
+  /**
+   * In our local node tree, fill in all values that we have.
+   */
+  private void fillDecisionTreeValues() {
+    this.valueMap.keySet().forEach(
+        key -> {
+          final Comparable value = this.valueMap.get(key);
+          final Set<SkLogicInf> nodeSet = this.identityNameMap.get(key);
+          nodeSet.stream().parallel().forEach(
+              n -> n.setLeftSide(value)
+          );
+        });
   }
 
   /**
    *
    */
+
   private void validateValueMap() {
     // If not all value in identityNameMap are set, tell them which ones are missing.
     int diffSize = this.identityNameMap.size() - this.valueMap.size();

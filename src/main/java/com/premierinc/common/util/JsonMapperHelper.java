@@ -13,8 +13,8 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_ENUMS_US
 /**
  *
  */
-public class LogicMapperHelper {
-  private LogicMapperHelper() {
+public class JsonMapperHelper {
+  private JsonMapperHelper() {
   }
 
   public static final ObjectMapper newInstance() {

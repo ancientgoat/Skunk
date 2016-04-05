@@ -1,11 +1,8 @@
 package com.premierinc.processtree.decisiontree;
 
-import com.premierinc.processinput.base.DecisionIdentity;
 import com.premierinc.processinput.base.InpNodeBase;
 import com.premierinc.processinput.core.InpGroup;
-import com.premierinc.processinput.core.InpLogic;
 import com.premierinc.processtree.decisioninf.SkGroupInf;
-import com.premierinc.processtree.decisioninf.SkLogicInf;
 
 import java.util.List;
 
