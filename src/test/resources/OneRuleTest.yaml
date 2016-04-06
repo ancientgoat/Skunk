@@ -1,0 +1,11 @@
+---
+name: "test01"
+decisions:
+- !<logic>
+  predicate: {}
+  description: "Amount of milk(M): true if M > 1.33 oz"
+  operator: "GT"
+  identity:
+    name: "MILK"
+    uom: "oz"
+  value: 1.11

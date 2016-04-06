@@ -4,6 +4,7 @@ import com.premierinc.common.exception.SkException;
 import com.premierinc.processrun.organize.DecisionOrganizer;
 import com.premierinc.processtree.decisioninf.SkLogicInf;
 import com.premierinc.processtree.decisioninf.SkNodeInf;
+import org.slf4j.Logger;
 
 import java.util.*;
 
@@ -11,6 +12,8 @@ import java.util.*;
  *
  */
 public class DecisionRunner {
+
+  //private static Logger logger = new Logger(DecisionRunner.class);
 
   private final DecisionOrganizer organizer;
   private final Map<String, Comparable> valueMap = new HashMap<>();
@@ -32,10 +35,11 @@ public class DecisionRunner {
       throw new SkException(String.format("Identity name '%s' not found.", inName));
     }
 
-    Comparable existingValue = this.valueMap.get(inName);
-    if (null != existingValue) {
-      throw new SkException(String.format("Identity name '%s' already has a value of '%s'.", inName, existingValue));
-    }
+    // TODO: output a warning?  yes or no?
+    //Comparable existingValue = this.valueMap.get(inName);
+    //if (null != existingValue) {
+    //  throw new SkException(String.format("Identity name '%s' already has a value of '%s'.", inName, existingValue));
+    //}
 
     this.valueMap.put(inName, inValue);
   }
@@ -52,7 +56,9 @@ public class DecisionRunner {
     fillDecisionTreeValues();
 
     // Run the decision tree.
-    return this.topNode.test();
+    boolean test = this.topNode.test();
+    //System.out.println(String.format("And the final answer is '%s'", test));
+    return test;
   }
 
   /**

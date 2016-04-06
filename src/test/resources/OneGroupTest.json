@@ -14,10 +14,10 @@
       },
       {
         "type": "andOr",
-        "operator": "OR"
+        "operator": "AND"
       },
       {
-        "type": "decisionGroup",
+        "type": "group",
         "name": "test01",
         "decisions": [
           {
@@ -28,7 +28,7 @@
             },
             "description": "Amount of milk > 1.33 oz",
             "operator": "GT",
-            "value": 1.33
+            "value": 111111.33
           },
           {
             "type": "andOr",
@@ -42,7 +42,7 @@
             },
             "description": "Amount of orange juice < 10 oz",
             "operator": "LT",
-            "value": 10
+            "value": 10.0
           }
         ]
       }

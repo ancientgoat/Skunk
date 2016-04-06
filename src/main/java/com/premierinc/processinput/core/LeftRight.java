@@ -1,23 +1,26 @@
 package com.premierinc.processinput.core;
 
+import org.springframework.util.comparator.ComparableComparator;
+
 /**
  *
  */
-public class LeftRight<V extends Comparable>  {
+//public class LeftRight<V extends Comparable>  {
+public class LeftRight  {
 
-  private V rightSide;
-  private V leftSide;
+  private Comparable rightSide;
+  private Comparable leftSide;
 
-  public LeftRight(final V inLeft, final V inRight){
+  public LeftRight(final Comparable inLeft, final Comparable inRight){
     this.leftSide = inLeft;
     this.rightSide = inRight;
   }
 
-  public V getLeftSide() {
+  public Comparable getLeftSide() {
     return leftSide;
   }
 
-  public V getRightSide() {
+  public Comparable getRightSide() {
     return rightSide;
   }
 }

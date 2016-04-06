@@ -1,0 +1,21 @@
+---
+name: "test01"
+decisions:
+- !<logic>
+  predicate: {}
+  description: "Amount of milk > 1.33 oz"
+  operator: "GT"
+  identity:
+    name: "MILK"
+    uom: "oz"
+  value: 2.22
+- !<andOr>
+  operator: "OR"
+- !<logic>
+  predicate: {}
+  description: "Amount of orange juice < 10 oz"
+  operator: "LT"
+  identity:
+    name: "ORANGE_JUICE"
+    uom: "oz"
+  value: 22.22

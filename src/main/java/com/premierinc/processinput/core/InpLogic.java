@@ -2,7 +2,6 @@ package com.premierinc.processinput.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.premierinc.common.enumeration.InpType;
 import com.premierinc.common.enumeration.LogicOperatorEnum;
 import com.premierinc.common.exception.SkException;
 import com.premierinc.common.util.LogicExecuterHelper;
@@ -29,12 +28,6 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
    */
   private String description;
 
-  //  /**
-  //   * This is the dynamic value entered on the fly, to use when executing this logic.
-  //   */
-  //  @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-  //  private T leftValue = null;
-  //
   /**
    * Operator we are to apply to our logic bit.
    */
@@ -59,11 +52,6 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
     this.predicate = LogicExecuterHelper.buildPredicate(inOperator);
   }
 
-
-  public InpType getInpType() {
-    return InpType.LOGIC;
-  }
-
   public T getRightValue() {
     return rightValue;
   }
@@ -80,10 +68,8 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
    * This was made purposely as a thread safe method.
    */
   public final boolean test(final LeftRight inLeftRight) {
-
-
     boolean result = this.predicate.test(inLeftRight);
-    System.out.println(lastOutput(inLeftRight, result));
+    //System.out.println(lastOutput(inLeftRight, result));
     return result;
   }
 
@@ -91,16 +77,15 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
    * This was made purposely as a thread safe method.
    */
   public boolean test(final Comparable inLeftValue) {
-
-
     final LeftRight leftRight = new LeftRight(inLeftValue, this.rightValue);
-    boolean result = this.predicate.test(leftRight);
-    System.out.println(lastOutput(leftRight, result));
-    return result;
+    return test(leftRight);
+    //boolean result = this.predicate.test(leftRight);
+    //System.out.println(lastOutput(leftRight, result));
+    //return result;
   }
 
   public final String lastOutput(final LeftRight inLeftRight, final boolean inResult) {
-    return String.format("%s %s %s  Result:%s", inLeftRight.getLeftSide(), this.operator,
+    return String.format("%s %s %s  Result: %s", inLeftRight.getLeftSide(), this.operator,
         inLeftRight.getRightSide(), inResult);
   }
 

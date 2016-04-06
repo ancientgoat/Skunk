@@ -75,13 +75,19 @@ public class SkAndOrNode implements SkAndOrInf {
 
     boolean boolResult = false;
 
-    for (final SkNodeInf node : inNodeList) {
+    final int lastIndex = inNodeList.size() - 1;
+    for (int i = 0; i <= lastIndex; i++) {
+      final SkNodeInf node = inNodeList.get(i);
       boolResult = node.test();
+      //if (lastIndex > i) {
+      //  System.out.println("AND");
+      //}
       if (!boolResult) {
         // Since this is an 'AND' then any failure, makes the whole thing fail.
         break;
       }
     }
+    //System.out.println("AND : Done");
     return boolResult;
   }
 
@@ -92,13 +98,19 @@ public class SkAndOrNode implements SkAndOrInf {
 
     boolean boolResult = false;
 
-    for (final SkNodeInf node : inNodeList) {
+    final int lastIndex = inNodeList.size() - 1;
+    for (int i = 0; i <= lastIndex; i++) {
+      final SkNodeInf node = inNodeList.get(i);
       boolResult = node.test();
+      //if (lastIndex > i) {
+      //  System.out.println("OR");
+      //}
       if (boolResult) {
         // Since this is an 'OR' then any successful test, makes the whole thing successful.
-          break;
+        break;
       }
     }
+    //System.out.println("OR : Done");
     return boolResult;
   }
 }

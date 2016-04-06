@@ -36,21 +36,24 @@ public class LogicExecuterHelper {
   /**
    * true if input 'a GT b'.
    */
-  public static final <T extends Comparable<T>> boolean gt(final T a, final T b) {
+  //public static final <T extends Comparable<T>> boolean gt(final T a, final T b) {
+  public static final boolean gt(final Comparable a, final Comparable b) {
     return 0 < a.compareTo(b);
   }
 
   /**
    * true if input 'a LT b'.
    */
-  public static final <T extends Comparable<T>> boolean lt(final T a, final T b) {
+  //public static final <T extends Comparable<T>> boolean lt(final Comparable a, final Comparable b) {
+  public static final boolean lt(final Comparable a, final Comparable b) {
     return 0 > a.compareTo(b);
   }
 
   /**
    * true if input 'a EQ b'.
    */
-  public static final <T extends Comparable<T>> boolean eq(final T a, final T b) {
+  //public static final <T extends Comparable<T>> boolean eq(final T a, final T b) {
+  public static final boolean eq(final Comparable a, final Comparable b) {
     return 0 == a.compareTo(b);
   }
 }

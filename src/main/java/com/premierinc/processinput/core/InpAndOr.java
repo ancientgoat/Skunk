@@ -1,6 +1,5 @@
 package com.premierinc.processinput.core;
 
-import com.premierinc.common.enumeration.InpType;
 import com.premierinc.common.enumeration.AndOrOperatorEnum;
 import com.premierinc.processinput.base.InpNodeBase;
 
@@ -10,10 +9,6 @@ import com.premierinc.processinput.base.InpNodeBase;
 public class InpAndOr extends InpNodeBase {
 
   private AndOrOperatorEnum operator;
-
-  public InpType getLogicType() {
-    return InpType.ANDOR;
-  }
 
   public AndOrOperatorEnum getOperator() {
     return operator;
