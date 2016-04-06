@@ -5,20 +5,22 @@ import com.premierinc.processinput.core.InpLogic;
 import com.premierinc.processinput.core.LeftRight;
 import com.premierinc.processtree.decisioninf.SkLogicInf;
 
+import java.math.BigDecimal;
+
 /**
  *
  */
-public class SkLogicNode<V extends Comparable> implements SkLogicInf {
+public class SkLogicNode implements SkLogicInf {
 
   private final InpLogic logicBit;
-  private Comparable leftSide;
+  private BigDecimal leftSide;
 
   public SkLogicNode(final InpLogic inInpLogic) {
     this.logicBit = inInpLogic;
   }
 
   @Override
-  public void setLeftSide(final Comparable leftSide) {
+  public void setLeftSide(final BigDecimal leftSide) {
     this.leftSide = leftSide;
   }
 
@@ -39,7 +41,7 @@ public class SkLogicNode<V extends Comparable> implements SkLogicInf {
   }
 
   @Override
-  public boolean test(Comparable inLeftSide) {
+  public boolean test(BigDecimal inLeftSide) {
     return logicBit.test(inLeftSide);
   }
 

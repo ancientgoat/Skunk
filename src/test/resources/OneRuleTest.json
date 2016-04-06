@@ -6,7 +6,9 @@
         "type": "logic",
         "identity": {
           "name": "MILK",
-          "uom": "oz"
+          "uom_base": {
+            "uomtype": "oz"
+          }
         },
         "description": "Amount of milk(M): true if M > 1.33 oz",
         "operator": "GT",

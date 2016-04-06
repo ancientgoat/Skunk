@@ -1,26 +1,25 @@
 package com.premierinc.processinput.core;
 
-import org.springframework.util.comparator.ComparableComparator;
+import java.math.BigDecimal;
 
 /**
  *
  */
-//public class LeftRight<V extends Comparable>  {
 public class LeftRight  {
 
-  private Comparable rightSide;
-  private Comparable leftSide;
+  private BigDecimal rightSide;
+  private BigDecimal leftSide;
 
-  public LeftRight(final Comparable inLeft, final Comparable inRight){
+  public LeftRight(final BigDecimal inLeft, final BigDecimal inRight){
     this.leftSide = inLeft;
     this.rightSide = inRight;
   }
 
-  public Comparable getLeftSide() {
+  public BigDecimal getLeftSide() {
     return leftSide;
   }
 
-  public Comparable getRightSide() {
+  public BigDecimal getRightSide() {
     return rightSide;
   }
 }

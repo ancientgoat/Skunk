@@ -130,7 +130,7 @@ public class DecisionOrganizer {
   private void populateIdentityWithNode(final Map<String, Set<SkLogicInf>> inIdentityNameMap, final SkNodeInf inNode) {
 
     if (inNode instanceof SkLogicInf) {
-      final String identityName = ((SkLogicInf<Comparable>) inNode).getIdentity().getName();
+      final String identityName = ((SkLogicInf) inNode).getIdentity().getName();
 
       Set<SkLogicInf> nodeSet = inIdentityNameMap.get(identityName);
       if (null == nodeSet) {

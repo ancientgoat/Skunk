@@ -4,8 +4,10 @@ import com.premierinc.common.exception.SkException;
 import com.premierinc.processrun.organize.DecisionOrganizer;
 import com.premierinc.processtree.decisioninf.SkLogicInf;
 import com.premierinc.processtree.decisioninf.SkNodeInf;
+import org.omg.CORBA.INTERNAL;
 import org.slf4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -16,7 +18,7 @@ public class DecisionRunner {
   //private static Logger logger = new Logger(DecisionRunner.class);
 
   private final DecisionOrganizer organizer;
-  private final Map<String, Comparable> valueMap = new HashMap<>();
+  private final Map<String, BigDecimal> valueMap = new HashMap<>();
   private final Map<String, Set<SkLogicInf>> identityNameMap;
   private SkNodeInf topNode;
 
@@ -29,7 +31,35 @@ public class DecisionRunner {
   /**
    *
    */
-  public <V extends Comparable> void addValue(final String inName, final V inValue) {
+  public void addValue(final String inName, final int inValue) {
+    addValue(inName, new BigDecimal(inValue));
+  }
+
+  /**
+   *
+   */
+  public void addValue(final String inName, final long inValue) {
+    addValue(inName, new BigDecimal(inValue));
+  }
+
+  /**
+   *
+   */
+  public void addValue(final String inName, final float inValue) {
+    addValue(inName, new BigDecimal(inValue));
+  }
+
+  /**
+   *
+   */
+  public void addValue(final String inName, final double inValue) {
+    addValue(inName, new BigDecimal(inValue));
+  }
+
+  /**
+   *
+   */
+  public void addValue(final String inName, final BigDecimal inValue) {
 
     if (!this.identityNameMap.containsKey(inName)) {
       throw new SkException(String.format("Identity name '%s' not found.", inName));
@@ -67,7 +97,7 @@ public class DecisionRunner {
   private void fillDecisionTreeValues() {
     this.valueMap.keySet().forEach(
         key -> {
-          final Comparable value = this.valueMap.get(key);
+          final BigDecimal value = this.valueMap.get(key);
           final Set<SkLogicInf> nodeSet = this.identityNameMap.get(key);
           nodeSet.stream().parallel().forEach(
               n -> n.setLeftSide(value)

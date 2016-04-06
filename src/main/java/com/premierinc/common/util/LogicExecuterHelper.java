@@ -4,6 +4,7 @@ import com.premierinc.common.enumeration.LogicOperatorEnum;
 import com.premierinc.common.exception.SkException;
 import com.premierinc.processinput.core.LeftRight;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -36,24 +37,24 @@ public class LogicExecuterHelper {
   /**
    * true if input 'a GT b'.
    */
-  //public static final <T extends Comparable<T>> boolean gt(final T a, final T b) {
-  public static final boolean gt(final Comparable a, final Comparable b) {
+  //public static final <T extends BigDecimal<T>> boolean gt(final T a, final T b) {
+  public static final boolean gt(final BigDecimal a, final BigDecimal b) {
     return 0 < a.compareTo(b);
   }
 
   /**
    * true if input 'a LT b'.
    */
-  //public static final <T extends Comparable<T>> boolean lt(final Comparable a, final Comparable b) {
-  public static final boolean lt(final Comparable a, final Comparable b) {
+  //public static final <T extends BigDecimal<T>> boolean lt(final BigDecimal a, final BigDecimal b) {
+  public static final boolean lt(final BigDecimal a, final BigDecimal b) {
     return 0 > a.compareTo(b);
   }
 
   /**
    * true if input 'a EQ b'.
    */
-  //public static final <T extends Comparable<T>> boolean eq(final T a, final T b) {
-  public static final boolean eq(final Comparable a, final Comparable b) {
+  //public static final <T extends BigDecimal<T>> boolean eq(final T a, final T b) {
+  public static final boolean eq(final BigDecimal a, final BigDecimal b) {
     return 0 == a.compareTo(b);
   }
 }

@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.common.enumeration.LogicOperatorEnum;
 import com.premierinc.common.exception.SkException;
+import com.premierinc.common.uom.UomBase;
 import com.premierinc.common.util.LogicExecuterHelper;
 import com.premierinc.processinput.base.DecisionIdentity;
 import com.premierinc.processinput.base.InpNodeBase;
 
+import java.math.BigDecimal;
 import java.util.function.Predicate;
 
 /**
@@ -19,7 +21,7 @@ import java.util.function.Predicate;
  * ex.  X < 17,  X is the variable that gets filled in later and "< 17" is the permanent
  * operator and right side variable.
  */
-public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
+public class InpLogic extends InpNodeBase {
 
   private Predicate<LeftRight> predicate;
 
@@ -38,8 +40,7 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
    * with the original formula.
    */
   @JsonProperty("value")
-  @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-  private T rightValue = null;
+  private BigDecimal rightValue = null;
 
   /**
    *
@@ -52,7 +53,7 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
     this.predicate = LogicExecuterHelper.buildPredicate(inOperator);
   }
 
-  public T getRightValue() {
+  public BigDecimal getRightValue() {
     return rightValue;
   }
 
@@ -69,14 +70,14 @@ public class InpLogic<T extends Comparable<T>> extends InpNodeBase {
    */
   public final boolean test(final LeftRight inLeftRight) {
     boolean result = this.predicate.test(inLeftRight);
-    //System.out.println(lastOutput(inLeftRight, result));
+    // System.out.println(lastOutput(inLeftRight, result));
     return result;
   }
 
   /**
    * This was made purposely as a thread safe method.
    */
-  public boolean test(final Comparable inLeftValue) {
+  public boolean test(final BigDecimal inLeftValue) {
     final LeftRight leftRight = new LeftRight(inLeftValue, this.rightValue);
     return test(leftRight);
     //boolean result = this.predicate.test(leftRight);

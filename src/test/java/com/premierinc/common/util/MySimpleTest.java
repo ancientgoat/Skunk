@@ -2,6 +2,8 @@ package com.premierinc.common.util;
 
 import com.beust.jcommander.internal.Maps;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.snakeyaml.Yaml;
+import com.fasterxml.jackson.dataformat.yaml.snakeyaml.constructor.SafeConstructor;
 import com.premierinc.common.exception.SkException;
 import com.premierinc.processinput.core.DecisionChain;
 import com.premierinc.processrun.organize.DecisionOrganizer;
@@ -11,6 +13,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
@@ -29,13 +32,26 @@ public class MySimpleTest {
   public static final String TWO_RULES_TEST_FILE = String.format("%s/%s", FILE_ROOT_DIR, TWO_RULES_FILE_NAME);
   public static final String ONE_GROUP_TEST_FILE = String.format("%s/%s", FILE_ROOT_DIR, ONE_GROUP_FILE_NAME);
 
-  private StopWatch stopwatch = new StopWatch();
+  private StopWatch stopwatch;
+
+  //  @Test
+  //  public void testConvertAllToYamlTEst() {
+  //    try {
+  //      final String path = "C:/work/Skunk/src/test/resources";
+  //      outputYaml(ONE_RULE_TEST_FILE, String.format("%s/%s", path, ONE_RULE_FILE_NAME));
+  //      outputYaml(TWO_RULES_TEST_FILE, String.format("%s/%s", path, TWO_RULES_FILE_NAME));
+  //      outputYaml(ONE_GROUP_TEST_FILE, String.format("%s/%s", path, ONE_GROUP_FILE_NAME));
+  //
+  //    } catch (Exception e) {
+  //      throw new IllegalArgumentException(e);
+  //    }
+  //  }
 
   @Test
   public void testReadFileTest() {
     timerStart();
     try {
-      ObjectMapper mapper = JsonMapperHelper.newInstance();
+      ObjectMapper mapper = JsonMapperHelper.newInstanceJson();
 
       // =======================================================================
       // mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
@@ -43,33 +59,20 @@ public class MySimpleTest {
       // mapper.getSerializationConfig().addMixInAnnotations(MyBase.class, InpNodeBase.class);
       // =======================================================================
 
-      File file = new File(ONE_RULE_TEST_FILE);
-      DecisionChain chain = mapper.readValue(file, DecisionChain.class);
-
-      System.out.println("******************************************************");
-      System.out.println(JsonHelper.beanToJsonString(chain));
-      System.out.println("******************************************************");
-      System.out.println(JsonHelper.beanToYamlString(chain));
-      System.out.println("******************************************************");
-
-      final String path = "C:/work/Skunk/src/test/resources";
-      outputYaml(ONE_RULE_TEST_FILE, String.format("%s/%s", path, ONE_RULE_FILE_NAME));
-      outputYaml(TWO_RULES_TEST_FILE, String.format("%s/%s", path, TWO_RULES_FILE_NAME));
-      outputYaml(ONE_GROUP_TEST_FILE, String.format("%s/%s", path, ONE_GROUP_FILE_NAME));
+      buildRunnerFromFile(ONE_RULE_TEST_FILE);
 
     } catch (Exception e) {
       throw new IllegalArgumentException(e);
     }
-    timerStop();
+    timerStop("testReadFileTest");
   }
 
   /**
    *
    */
   private void outputYaml(final String fileName, final String outputFileName) {
-    timerStart();
     try {
-      ObjectMapper mapper = JsonMapperHelper.newInstance();
+      ObjectMapper mapper = JsonMapperHelper.newInstanceJson();
       File file = new File(fileName);
       String yamlName = outputFileName.replace(".json", ".yaml");
       File outputFile = new File(yamlName);
@@ -77,13 +80,15 @@ public class MySimpleTest {
 
       DecisionChain chain = mapper.readValue(file, DecisionChain.class);
 
-      writer.write(JsonHelper.beanToYamlString(chain));
+      Map<String, DecisionChain> map = Maps.newHashMap();
+      map.put("decisionList", chain);
+
+      writer.write(JsonHelper.beanToYamlString(map));
       writer.flush();
       writer.close();
     } catch (Exception e) {
       throw new IllegalArgumentException(e);
     }
-    timerStop();
   }
 
   @Test
@@ -105,7 +110,7 @@ public class MySimpleTest {
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
     }
-    timerStop();
+    timerStop("testOneRuleTest");
   }
 
   @Test
@@ -129,7 +134,7 @@ public class MySimpleTest {
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
     }
-    timerStop();
+    timerStop("testTwoRuleTest");
   }
 
 
@@ -155,14 +160,14 @@ public class MySimpleTest {
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
     }
-    timerStop();
+    timerStop("testOneGroupTest");
   }
 
 
   @Test
   public void testOneGroupRepeatTest() {
-    stopwatch.start();
 
+    timerStart();
     final int maxStart = -1000000;
     final int maxTests = maxStart + 2000000;
 
@@ -183,14 +188,33 @@ public class MySimpleTest {
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
     }
-    timerStop();
+    timerStop("testOneGroupRepeatTest");
     System.out.println(countMap);
   }
 
   private DecisionRunner buildRunnerFromFile(final String filePath) throws IOException {
-    final ObjectMapper objectMapper = JsonMapperHelper.newInstance();
-    final DecisionChain chain = objectMapper.readValue(new File(filePath), DecisionChain.class);
-    final DecisionOrganizer decisionOrganizer = new DecisionOrganizer(chain);
+
+    ObjectMapper objectMapper;
+    DecisionChain chain;
+    DecisionOrganizer decisionOrganizer;
+    File file = new File(filePath);
+
+    if (filePath.endsWith("yml") || filePath.endsWith("yaml")) {
+      objectMapper = JsonMapperHelper.newInstanceYaml();
+
+
+      Yaml yaml = new Yaml(new SafeConstructor());
+      chain = (DecisionChain) yaml.load(new FileReader(file));
+//      yaml.loadAll(input).forEach(System.out::println);
+      decisionOrganizer = new DecisionOrganizer(chain);
+
+
+    } else {
+      objectMapper = JsonMapperHelper.newInstanceJson();
+      chain = objectMapper.readValue(file, DecisionChain.class);
+    }
+    decisionOrganizer = new DecisionOrganizer(chain);
+
     return new DecisionRunner(decisionOrganizer);
   }
 
@@ -199,11 +223,12 @@ public class MySimpleTest {
   }
 
   private void timerStart() {
+    stopwatch = new StopWatch();
     stopwatch.start();
   }
 
-  private void timerStop() {
+  private void timerStop(final String inDescription) {
     stopwatch.stop();
-    System.out.println(String.format("********* : %s", stopwatch.toString()));
+    System.out.println(String.format("*** : %s : %s", inDescription, stopwatch.toString()));
   }
 }

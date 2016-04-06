@@ -17,7 +17,7 @@ public class InpAndOr extends InpNodeBase {
   /**
    *
    */
-  public static class Builder<T extends Comparable<T>> {
+  public static class Builder {
 
     private InpAndOr myLogic = new InpAndOr();
 

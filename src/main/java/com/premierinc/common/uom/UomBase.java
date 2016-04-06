@@ -10,7 +10,7 @@ import com.premierinc.processinput.core.InpLogic;
 /**
  *
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "uomtype")
 @JsonSubTypes({@JsonSubTypes.Type(value = UomOz.class, name = "oz")
 })
 public abstract class UomBase {
