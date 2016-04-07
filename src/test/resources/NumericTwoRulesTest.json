@@ -3,7 +3,7 @@
     "name": "test01",
     "decisions": [
       {
-        "type": "logic",
+        "type": "numeric",
         "identity": {
           "name": "MILK",
           "uom": "oz"
@@ -17,7 +17,7 @@
         "operator": "OR"
       },
       {
-        "type": "logic",
+        "type": "numeric",
         "identity": {
           "name": "ORANGE_JUICE",
           "uom": "oz"

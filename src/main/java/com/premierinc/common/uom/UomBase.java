@@ -3,9 +3,6 @@ package com.premierinc.common.uom;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.common.util.JsonHelper;
-import com.premierinc.processinput.core.InpAndOr;
-import com.premierinc.processinput.core.InpGroup;
-import com.premierinc.processinput.core.InpLogic;
 
 /**
  *

@@ -2,16 +2,15 @@ package com.premierinc.processrun.organize;
 
 import com.premierinc.common.exception.SkException;
 import com.premierinc.processinput.base.InpNodeBase;
-import com.premierinc.processinput.core.DecisionChain;
-import com.premierinc.processinput.core.InpAndOr;
-import com.premierinc.processinput.core.InpGroup;
-import com.premierinc.processinput.core.InpLogic;
+import com.premierinc.processinput.core.*;
 import com.premierinc.processtree.decisioninf.SkAndOrInf;
-import com.premierinc.processtree.decisioninf.SkLogicInf;
 import com.premierinc.processtree.decisioninf.SkNodeInf;
+import com.premierinc.processtree.decisioninf.SkNumericInf;
+import com.premierinc.processtree.decisioninf.SkTextInf;
 import com.premierinc.processtree.decisiontree.SkAndOrNode;
 import com.premierinc.processtree.decisiontree.SkGroupNode;
-import com.premierinc.processtree.decisiontree.SkLogicNode;
+import com.premierinc.processtree.decisiontree.SkNumericNode;
+import com.premierinc.processtree.decisiontree.SkTextNode;
 
 import java.util.*;
 
@@ -25,7 +24,7 @@ public class DecisionOrganizer {
 
   private final DecisionChain decisionChain;
   private final List<InpNodeBase> decisions;
-  private Map<String, Set<SkLogicInf>> identityNameMap = new HashMap<>();
+  private Map<String, Set<SkNodeInf>> identityNameMap = new HashMap<>();
   private SkNodeInf topNode;
 
   public DecisionOrganizer(final DecisionChain inChain) {
@@ -86,7 +85,7 @@ public class DecisionOrganizer {
    * 1) Find and set the top level decision node for this list of Decisions.
    * 2) Organize the ndoe into a proper (suggested) execution order.
    */
-  private SkNodeInf processMoreThanOneDecision(final Map<String, Set<SkLogicInf>> identityNameMap,
+  private SkNodeInf processMoreThanOneDecision(final Map<String, Set<SkNodeInf>> identityNameMap,
                                                final List<InpNodeBase> inDecisions) {
     SkNodeInf localTopNode = null;
     final Stack<SkAndOrInf> andOrStack = new Stack<>();
@@ -127,16 +126,24 @@ public class DecisionOrganizer {
   /**
    *
    */
-  private void populateIdentityWithNode(final Map<String, Set<SkLogicInf>> inIdentityNameMap, final SkNodeInf inNode) {
+  private void populateIdentityWithNode(final Map<String, Set<SkNodeInf>> inIdentityNameMap, final SkNodeInf inNode) {
 
-    if (inNode instanceof SkLogicInf) {
-      final String identityName = ((SkLogicInf) inNode).getIdentity().getName();
+    if (inNode instanceof SkTextInf) {
 
-      Set<SkLogicInf> nodeSet = inIdentityNameMap.get(identityName);
+      final String identityName = ((SkTextInf) inNode).getIdentity().getName();
+
+      Set<SkNodeInf> nodeSet = inIdentityNameMap.get(identityName);
       if (null == nodeSet) {
         nodeSet = new HashSet<>();
       }
-      nodeSet.add((SkLogicInf) inNode);
+
+      if (inNode instanceof SkTextNode) {
+        nodeSet.add((SkTextNode) inNode);
+      } else {
+        throw new SkException(String.format("Expected 'SkTextNode' but found '%s'",
+            inNode.getClass().getName()));
+      }
+
       inIdentityNameMap.put(identityName, nodeSet);
     }
   }
@@ -155,9 +162,15 @@ public class DecisionOrganizer {
   /**
    *
    */
-  private SkNodeInf getLogicOrGroup(Map<String, Set<SkLogicInf>> inIdentityNameMap,
+  private SkNodeInf getLogicOrGroup(Map<String, Set<SkNodeInf>> inIdentityNameMap,
                                     final InpNodeBase inNode) {
-    if (inNode instanceof InpLogic) {
+    if (inNode instanceof InpNumeric) {
+
+      SkNodeInf skNode = translateNode(inNode);
+      populateIdentityWithNode(inIdentityNameMap, skNode);
+      return skNode;
+
+    } else if (inNode instanceof InpText) {
 
       SkNodeInf skNode = translateNode(inNode);
       populateIdentityWithNode(inIdentityNameMap, skNode);
@@ -171,7 +184,7 @@ public class DecisionOrganizer {
       return localNode;
 
     } else {
-      throw new SkException(String.format("Expected decision type of Logic or Group, but found '%s'",
+      throw new SkException(String.format("Expected decision type of 'numeric', 'text', or 'group', but found '%s'",
           inNode.getClass().getName()));
     }
   }
@@ -180,12 +193,22 @@ public class DecisionOrganizer {
    *
    */
   private SkNodeInf translateNode(final InpNodeBase inNode) {
-    if (inNode instanceof InpLogic) {
-      return new SkLogicNode((InpLogic) inNode);
+    if (inNode instanceof InpNumeric) {
+
+      return new SkNumericNode((InpNumeric) inNode);
+
+    } else if (inNode instanceof InpText) {
+
+      return new SkTextNode((InpText) inNode);
+
     } else if (inNode instanceof InpGroup) {
+
       return new SkGroupNode((InpGroup) inNode);
+
     } else if (inNode instanceof InpAndOr) {
+
       return new SkAndOrNode((InpAndOr) inNode);
+
     } else {
       throw new SkException(String.format("Node instance '%s' type not implemented yet.", inNode.getClass().getName()));
     }
@@ -207,7 +230,7 @@ public class DecisionOrganizer {
   /**
    *
    */
-  public Map<String, Set<SkLogicInf>> getIdentityNameMap() {
+  public Map<String, Set<SkNodeInf>> getIdentityNameMap() {
     return this.identityNameMap;
   }
 

@@ -1,15 +1,13 @@
 package com.premierinc.processinput.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.premierinc.common.enumeration.LogicOperatorEnum;
+import com.premierinc.common.enumeration.TextOperatorEnum;
 import com.premierinc.common.exception.SkException;
-import com.premierinc.common.uom.UomBase;
-import com.premierinc.common.util.LogicExecuterHelper;
+import com.premierinc.common.util.TextLogicExecuterHelper;
 import com.premierinc.processinput.base.DecisionIdentity;
 import com.premierinc.processinput.base.InpNodeBase;
 
-import java.math.BigDecimal;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -21,9 +19,9 @@ import java.util.function.Predicate;
  * ex.  X < 17,  X is the variable that gets filled in later and "< 17" is the permanent
  * operator and right side variable.
  */
-public class InpLogic extends InpNodeBase {
+public class InpText extends InpNodeBase {
 
-  private Predicate<LeftRight> predicate;
+  private Predicate<LeftRightText> predicate;
 
   /**
    * Hopefully someone was smart enough to give a decent description of our Logic bit.
@@ -33,14 +31,17 @@ public class InpLogic extends InpNodeBase {
   /**
    * Operator we are to apply to our logic bit.
    */
-  private LogicOperatorEnum operator;
+  private TextOperatorEnum operator;
 
   /**
    * This is the right side of the logic operation, a permanent value entered
    * with the original formula.
    */
-  @JsonProperty("value")
-  private BigDecimal rightValue = null;
+  @JsonProperty("text_value")
+  private String rightTextValue = null;
+
+  @JsonProperty("text_list")
+  private List<String> rightTextList = null;
 
   /**
    *
@@ -48,46 +49,52 @@ public class InpLogic extends InpNodeBase {
   private DecisionIdentity identity;
 
   @JsonProperty
-  public void setOperator(final LogicOperatorEnum inOperator) {
+  public void setOperator(final TextOperatorEnum inOperator) {
     this.operator = inOperator;
-    this.predicate = LogicExecuterHelper.buildPredicate(inOperator);
+    this.predicate = TextLogicExecuterHelper.buildPredicate(inOperator);
   }
 
-  public BigDecimal getRightValue() {
-    return rightValue;
+  public List<String> getRightTextList() {
+    return rightTextList;
   }
 
-  public LogicOperatorEnum getOperator() {
+  public String getRightTextValue() {
+    return rightTextValue;
+  }
+
+  public TextOperatorEnum getOperator() {
     return operator;
   }
 
-  public Predicate<LeftRight> getPredicate() {
+  public Predicate<LeftRightText> getPredicate() {
     return predicate;
   }
 
   /**
    * This was made purposely as a thread safe method.
    */
-  public final boolean test(final LeftRight inLeftRight) {
-    boolean result = this.predicate.test(inLeftRight);
-    // System.out.println(lastOutput(inLeftRight, result));
+  public final boolean test(final LeftRightText inLeftRightText) {
+    boolean result = this.predicate.test(inLeftRightText);
+    // System.out.println(lastOutput(inLeftRightText, result));
     return result;
   }
 
   /**
    * This was made purposely as a thread safe method.
    */
-  public boolean test(final BigDecimal inLeftValue) {
-    final LeftRight leftRight = new LeftRight(inLeftValue, this.rightValue);
+  public boolean test(final String inLeftValue) {
+    LeftRightText leftRight = null;
+    if (null == this.rightTextValue) {
+      leftRight = new LeftRightText(inLeftValue, this.rightTextList);
+    } else {
+      leftRight = new LeftRightText(inLeftValue, this.rightTextValue);
+    }
     return test(leftRight);
-    //boolean result = this.predicate.test(leftRight);
-    //System.out.println(lastOutput(leftRight, result));
-    //return result;
   }
 
-  public final String lastOutput(final LeftRight inLeftRight, final boolean inResult) {
-    return String.format("%s %s %s  Result: %s", inLeftRight.getLeftSide(), this.operator,
-        inLeftRight.getRightSide(), inResult);
+  public final String lastOutput(final LeftRightText inLeftRightText, final boolean inResult) {
+    return String.format("%s %s %s  Result: %s", inLeftRightText.getLeftSide(), this.operator,
+        inLeftRightText.getRightSide(), inResult);
   }
 
   public String getDescription() {
@@ -106,7 +113,7 @@ public class InpLogic extends InpNodeBase {
       throw new SkException(String.format("Missing operator.  Operator is required.\n%s",
           this.dumpToJsonString()));
     }
-    if (null == this.rightValue) {
+    if (null == this.rightTextValue) {
       throw new SkException(String.format("Missing value.  Value is required.\n%s",
           this.dumpToJsonString()));
     }

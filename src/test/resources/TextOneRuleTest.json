@@ -1,0 +1,23 @@
+{
+  "decisionList": {
+    "name": "test01",
+    "decisions": [
+      {
+        "type": "text",
+        "identity": {
+          "name": "PARAGRAPH_MORE_OR_LESS_ABOUT_MILK",
+          "uom_base": {
+            "uomtype": "oz"
+          }
+        },
+        "description": "Source of milk(M): true if M containsOneOf ('farm', 'dairy', 'backyards') ",
+        "operator": "CONTAINS_ONE_OF",
+        "text_list": [
+          "faRM",
+          "dAIry",
+          "backYaRds"
+        ]
+      }
+    ]
+  }
+}

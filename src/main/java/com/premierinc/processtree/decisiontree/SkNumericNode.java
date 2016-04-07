@@ -1,22 +1,22 @@
 package com.premierinc.processtree.decisiontree;
 
 import com.premierinc.processinput.base.DecisionIdentity;
-import com.premierinc.processinput.core.InpLogic;
-import com.premierinc.processinput.core.LeftRight;
-import com.premierinc.processtree.decisioninf.SkLogicInf;
+import com.premierinc.processinput.core.InpNumeric;
+import com.premierinc.processinput.core.LeftRightNumeric;
+import com.premierinc.processtree.decisioninf.SkNumericInf;
 
 import java.math.BigDecimal;
 
 /**
  *
  */
-public class SkLogicNode implements SkLogicInf {
+public class SkNumericNode implements SkNumericInf {
 
-  private final InpLogic logicBit;
+  private final InpNumeric logicBit;
   private BigDecimal leftSide;
 
-  public SkLogicNode(final InpLogic inInpLogic) {
-    this.logicBit = inInpLogic;
+  public SkNumericNode(final InpNumeric inInpNumeric) {
+    this.logicBit = inInpNumeric;
   }
 
   @Override
@@ -36,8 +36,8 @@ public class SkLogicNode implements SkLogicInf {
 
 
   @Override
-  public boolean test(LeftRight inLeftRight) {
-    return logicBit.test(inLeftRight);
+  public boolean test(LeftRightNumeric inLeftRightNumeric) {
+    return logicBit.test(inLeftRightNumeric);
   }
 
   @Override

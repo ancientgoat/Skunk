@@ -1,0 +1,51 @@
+{
+  "decisionList": {
+    "name": "test01",
+    "decisions": [
+      {
+        "type": "numeric",
+        "identity": {
+          "name": "MILK",
+          "uom": "oz"
+        },
+        "description": "Amount of milk < 100.03 oz",
+        "operator": "LT",
+        "value": 100.03
+      },
+      {
+        "type": "andOr",
+        "operator": "AND"
+      },
+      {
+        "type": "group",
+        "name": "test01",
+        "decisions": [
+          {
+            "type": "numeric",
+            "identity": {
+              "name": "MILK",
+              "uom": "oz"
+            },
+            "description": "Amount of milk > 1.33 oz",
+            "operator": "GT",
+            "value": 111111.33
+          },
+          {
+            "type": "andOr",
+            "operator": "OR"
+          },
+          {
+            "type": "numeric",
+            "identity": {
+              "name": "ORANGE_JUICE",
+              "uom": "oz"
+            },
+            "description": "Amount of orange juice < 10 oz",
+            "operator": "LT",
+            "value": 10.0
+          }
+        ]
+      }
+    ]
+  }
+}

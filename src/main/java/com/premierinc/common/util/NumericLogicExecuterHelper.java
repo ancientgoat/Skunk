@@ -2,7 +2,7 @@ package com.premierinc.common.util;
 
 import com.premierinc.common.enumeration.LogicOperatorEnum;
 import com.premierinc.common.exception.SkException;
-import com.premierinc.processinput.core.LeftRight;
+import com.premierinc.processinput.core.LeftRightNumeric;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -12,21 +12,21 @@ import java.util.function.Predicate;
 /**
  *
  */
-public class LogicExecuterHelper {
+public class NumericLogicExecuterHelper {
 
-  private static final Map<LogicOperatorEnum, Predicate<LeftRight>> logicMap = new HashMap();
+  private static final Map<LogicOperatorEnum, Predicate<LeftRightNumeric>> logicMap = new HashMap();
 
   static {
-    logicMap.put(LogicOperatorEnum.LT, p -> LogicExecuterHelper.lt(p.getLeftSide(), p.getRightSide()));
-    logicMap.put(LogicOperatorEnum.GT, p -> LogicExecuterHelper.gt(p.getLeftSide(), p.getRightSide()));
-    logicMap.put(LogicOperatorEnum.EQ, p -> LogicExecuterHelper.eq(p.getLeftSide(), p.getRightSide()));
+    logicMap.put(LogicOperatorEnum.LT, p -> lt(p.getLeftSide(), p.getRightSide()));
+    logicMap.put(LogicOperatorEnum.GT, p -> gt(p.getLeftSide(), p.getRightSide()));
+    logicMap.put(LogicOperatorEnum.EQ, p -> eq(p.getLeftSide(), p.getRightSide()));
   }
 
-  private LogicExecuterHelper() {
+  private NumericLogicExecuterHelper() {
   }
 
   public static Predicate buildPredicate(final LogicOperatorEnum inOperator) {
-    final Predicate<LeftRight> predicate = logicMap.get(inOperator);
+    final Predicate<LeftRightNumeric> predicate = logicMap.get(inOperator);
 
     if (null == predicate) {
       throw new SkException(String.format("Operator '%s' not implemented yet.", inOperator));

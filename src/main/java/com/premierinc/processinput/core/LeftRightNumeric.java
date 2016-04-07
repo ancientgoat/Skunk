@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 /**
  *
  */
-public class LeftRight  {
+public class LeftRightNumeric {
 
   private BigDecimal rightSide;
   private BigDecimal leftSide;
 
-  public LeftRight(final BigDecimal inLeft, final BigDecimal inRight){
+  public LeftRightNumeric(final BigDecimal inLeft, final BigDecimal inRight){
     this.leftSide = inLeft;
     this.rightSide = inRight;
   }

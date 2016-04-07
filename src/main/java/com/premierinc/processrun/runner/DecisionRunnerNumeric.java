@@ -2,10 +2,8 @@ package com.premierinc.processrun.runner;
 
 import com.premierinc.common.exception.SkException;
 import com.premierinc.processrun.organize.DecisionOrganizer;
-import com.premierinc.processtree.decisioninf.SkLogicInf;
 import com.premierinc.processtree.decisioninf.SkNodeInf;
-import org.omg.CORBA.INTERNAL;
-import org.slf4j.Logger;
+import com.premierinc.processtree.decisioninf.SkNumericInf;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -13,53 +11,64 @@ import java.util.*;
 /**
  *
  */
-public class DecisionRunner {
+public class DecisionRunnerNumeric {
 
-  //private static Logger logger = new Logger(DecisionRunner.class);
+  //private static Logger logger = new Logger(DecisionRunnerNumeric.class);
 
   private final DecisionOrganizer organizer;
   private final Map<String, BigDecimal> valueMap = new HashMap<>();
-  private final Map<String, Set<SkLogicInf>> identityNameMap;
+  private Map<String, Set<SkNumericInf>> identityNameMap;
+
   private SkNodeInf topNode;
 
-  public DecisionRunner(final DecisionOrganizer inOrganizer) {
+  public DecisionRunnerNumeric(final DecisionOrganizer inOrganizer) {
     this.organizer = inOrganizer;
-    this.identityNameMap = this.organizer.getIdentityNameMap();
     this.topNode = this.organizer.getTopNode();
+
+    Map<String, Set<SkNodeInf>> inputMap = this.organizer.getIdentityNameMap();
+    inputMap.keySet().stream()
+        .forEach(key -> {
+              Set<SkNodeInf> nodes = inputMap.get(key);
+              Set<SkNumericInf> numericNodes = new HashSet<>();
+              nodes.stream().forEach(n -> numericNodes.add((SkNumericInf) n));
+              this.identityNameMap.put(key, numericNodes);
+            }
+        )
+    ;
   }
 
   /**
    *
    */
-  public void addValue(final String inName, final int inValue) {
-    addValue(inName, new BigDecimal(inValue));
+  public void setValue(final String inName, final int inValue) {
+    setValue(inName, new BigDecimal(inValue));
   }
 
   /**
    *
    */
-  public void addValue(final String inName, final long inValue) {
-    addValue(inName, new BigDecimal(inValue));
+  public void setValue(final String inName, final long inValue) {
+    setValue(inName, new BigDecimal(inValue));
   }
 
   /**
    *
    */
-  public void addValue(final String inName, final float inValue) {
-    addValue(inName, new BigDecimal(inValue));
+  public void setValue(final String inName, final float inValue) {
+    setValue(inName, new BigDecimal(inValue));
   }
 
   /**
    *
    */
-  public void addValue(final String inName, final double inValue) {
-    addValue(inName, new BigDecimal(inValue));
+  public void setValue(final String inName, final double inValue) {
+    setValue(inName, new BigDecimal(inValue));
   }
 
   /**
    *
    */
-  public void addValue(final String inName, final BigDecimal inValue) {
+  public void setValue(final String inName, final BigDecimal inValue) {
 
     if (!this.identityNameMap.containsKey(inName)) {
       throw new SkException(String.format("Identity name '%s' not found.", inName));
@@ -83,7 +92,7 @@ public class DecisionRunner {
     validateValueMap();
 
     // Next fill in the values.
-    fillDecisionTreeValues();
+    fillDecisionTreeNumericValues();
 
     // Run the decision tree.
     boolean test = this.topNode.test();
@@ -94,11 +103,11 @@ public class DecisionRunner {
   /**
    * In our local node tree, fill in all values that we have.
    */
-  private void fillDecisionTreeValues() {
+  private void fillDecisionTreeNumericValues() {
     this.valueMap.keySet().forEach(
         key -> {
           final BigDecimal value = this.valueMap.get(key);
-          final Set<SkLogicInf> nodeSet = this.identityNameMap.get(key);
+          final Set<SkNumericInf> nodeSet = (Set<SkNumericInf>) this.identityNameMap.get(key);
           nodeSet.stream().parallel().forEach(
               n -> n.setLeftSide(value)
           );

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.dataformat.yaml.snakeyaml.constructor.SafeConstruct
 import com.premierinc.common.exception.SkException;
 import com.premierinc.processinput.core.DecisionChain;
 import com.premierinc.processrun.organize.DecisionOrganizer;
-import com.premierinc.processrun.runner.DecisionRunner;
+import com.premierinc.processrun.runner.DecisionRunnerNumeric;
 import org.springframework.util.StopWatch;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -21,11 +21,11 @@ import java.util.Map;
 /**
  *
  */
-public class MySimpleTest {
+public class MyNumericSimpleTest {
 
-  public static final String ONE_RULE_FILE_NAME = "OneRuleTest.json";
-  public static final String TWO_RULES_FILE_NAME = "TwoRulesTest.json";
-  public static final String ONE_GROUP_FILE_NAME = "OneGroupTest.json";
+  public static final String ONE_RULE_FILE_NAME = "NumericOneRuleTest.json";
+  public static final String TWO_RULES_FILE_NAME = "NumericTwoRulesTest.json";
+  public static final String ONE_GROUP_FILE_NAME = "NumericOneGroupTest.json";
 
   public static final String FILE_ROOT_DIR = "C:/work/Skunk/src/test/resources/";
   public static final String ONE_RULE_TEST_FILE = String.format("%s/%s", FILE_ROOT_DIR, ONE_RULE_FILE_NAME);
@@ -95,17 +95,17 @@ public class MySimpleTest {
   public void testOneRuleTest() {
     timerStart();
     try {
-      final DecisionRunner decisionRunner = buildRunnerFromFile(ONE_RULE_TEST_FILE);
+      final DecisionRunnerNumeric decisionRunnerNumeric = buildRunnerFromFile(ONE_RULE_TEST_FILE);
 
-      decisionRunner.addValue("MILK", 16.3);
+      decisionRunnerNumeric.setValue("MILK", 16.3);
 
       try {
-        decisionRunner.addValue("MILKXX", 16.3);
+        decisionRunnerNumeric.setValue("MILKXX", 16.3);
         Assert.fail("We were suppose to get an error here????");
       } catch (SkException e) {
         int i = 0;
       }
-      decisionRunner.execute();
+      decisionRunnerNumeric.execute();
 
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
@@ -117,19 +117,19 @@ public class MySimpleTest {
   public void testTwoRuleTest() {
     timerStart();
     try {
-      final DecisionRunner decisionRunner = buildRunnerFromFile(TWO_RULES_TEST_FILE);
+      final DecisionRunnerNumeric decisionRunnerNumeric = buildRunnerFromFile(TWO_RULES_TEST_FILE);
 
-      decisionRunner.addValue("MILK", 16.3);
+      decisionRunnerNumeric.setValue("MILK", 16.3);
 
       try {
-        decisionRunner.execute();
+        decisionRunnerNumeric.execute();
         Assert.fail("We were suppose to get an error here????");
       } catch (SkException e) {
         int i = 0;
       }
-      decisionRunner.addValue("ORANGE_JUICE", 3.16);
+      decisionRunnerNumeric.setValue("ORANGE_JUICE", 3.16);
 
-      decisionRunner.execute();
+      decisionRunnerNumeric.execute();
 
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
@@ -143,19 +143,19 @@ public class MySimpleTest {
     stopwatch.start();
 
     try {
-      final DecisionRunner decisionRunner = buildRunnerFromFile(ONE_GROUP_TEST_FILE);
+      final DecisionRunnerNumeric decisionRunnerNumeric = buildRunnerFromFile(ONE_GROUP_TEST_FILE);
 
-      decisionRunner.addValue("MILK", 16.3);
+      decisionRunnerNumeric.setValue("MILK", 16.3);
 
       try {
-        decisionRunner.execute();
+        decisionRunnerNumeric.execute();
         Assert.fail("We were suppose to get an error here????");
       } catch (SkException e) {
         int i = 0;
       }
-      decisionRunner.addValue("ORANGE_JUICE", 3.16);
+      decisionRunnerNumeric.setValue("ORANGE_JUICE", 3.16);
 
-      decisionRunner.execute();
+      decisionRunnerNumeric.execute();
 
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
@@ -176,12 +176,12 @@ public class MySimpleTest {
     countMap.put(Boolean.TRUE, 0);
 
     try {
-      final DecisionRunner decisionRunner = buildRunnerFromFile(ONE_GROUP_TEST_FILE);
+      final DecisionRunnerNumeric decisionRunnerNumeric = buildRunnerFromFile(ONE_GROUP_TEST_FILE);
 
       for (int i = maxStart; i < maxTests; i++) {
-        decisionRunner.addValue("MILK", i + 0.3);
-        decisionRunner.addValue("ORANGE_JUICE", i + 0.16);
-        Boolean trueOrFalse = decisionRunner.execute();
+        decisionRunnerNumeric.setValue("MILK", i + 0.3);
+        decisionRunnerNumeric.setValue("ORANGE_JUICE", i + 0.16);
+        Boolean trueOrFalse = decisionRunnerNumeric.execute();
 
         countMap.put(trueOrFalse, 1 + countMap.get(trueOrFalse));
       }
@@ -192,7 +192,7 @@ public class MySimpleTest {
     System.out.println(countMap);
   }
 
-  private DecisionRunner buildRunnerFromFile(final String filePath) throws IOException {
+  private DecisionRunnerNumeric buildRunnerFromFile(final String filePath) throws IOException {
 
     ObjectMapper objectMapper;
     DecisionChain chain;
@@ -215,7 +215,7 @@ public class MySimpleTest {
     }
     decisionOrganizer = new DecisionOrganizer(chain);
 
-    return new DecisionRunner(decisionOrganizer);
+    return new DecisionRunnerNumeric(decisionOrganizer);
   }
 
   public void spacer() {
