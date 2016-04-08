@@ -5,35 +5,35 @@ import com.google.common.collect.Maps;
 import com.premierinc.common.exception.SkException;
 import com.premierinc.processrun.organize.DecisionOrganizer;
 import com.premierinc.processtree.decisioninf.SkNodeInf;
-import com.premierinc.processtree.decisioninf.SkTextInf;
+import com.premierinc.processtree.decisioninf.SkValueInf;
 
 import java.util.*;
 
 /**
  *
  */
-public class DecisionRunnerText {
+public class DecisionRunnerGeneric {
 
   //private static Logger logger = new Logger(DecisionRunnerNumeric.class);
 
   private final DecisionOrganizer organizer;
-  private final Map<String, String> valueMap = new HashMap<>();
-  private final Map<String, List<String>> valueMapList = new HashMap<>();
-  private Map<String, Set<SkTextInf>> identityNameMap = Maps.newHashMap();
+  private final Map<String, Object> valueMap = new HashMap<>();
+  private final Map<String, List<Object>> valueMapList = new HashMap<>();
+  private Map<String, Set<SkValueInf>> identityNameMap = Maps.newHashMap();
 
   private SkNodeInf topNode;
 
-  public DecisionRunnerText(final DecisionOrganizer inOrganizer) {
+  public DecisionRunnerGeneric(final DecisionOrganizer inOrganizer) {
     this.organizer = inOrganizer;
     this.topNode = this.organizer.getTopNode();
 
-    Map<String, Set<SkNodeInf>> inputMap = this.organizer.getIdentityNameMap();
+    Map<String, Set<SkValueInf>> inputMap = this.organizer.getIdentityNameMap();
     inputMap.keySet().stream()
         .forEach(key -> {
-              Set<SkNodeInf> nodes = inputMap.get(key);
-              Set<SkTextInf> textNodes = new HashSet<>();
-              nodes.stream().forEach(n -> textNodes.add((SkTextInf) n));
-              this.identityNameMap.put(key, textNodes);
+              Set<SkValueInf> nodes = inputMap.get(key);
+              Set<SkValueInf> skNodes = new HashSet<>();
+              nodes.stream().forEach(n -> skNodes.add(n));
+              this.identityNameMap.put(key, skNodes);
             }
         )
     ;
@@ -42,7 +42,7 @@ public class DecisionRunnerText {
   /**
    *
    */
-  public void setValue(final String inName, final String inValue) {
+  public void setValue(final String inName, final Object inValue) {
 
     if (!this.identityNameMap.containsKey(inName)) {
       throw new SkException(String.format("Identity name '%s' not found.", inName));
@@ -59,7 +59,7 @@ public class DecisionRunnerText {
     if (!this.identityNameMap.containsKey(inName)) {
       throw new SkException(String.format("Identity name '%s' not found.", inName));
     }
-    List<String> valueList = this.valueMapList.get(inName);
+    List<Object> valueList = this.valueMapList.get(inName);
     if (null == valueList) {
       valueList = Lists.newArrayList();
     }
@@ -91,20 +91,24 @@ public class DecisionRunnerText {
 
     this.valueMap.keySet().forEach(
         key -> {
-          final String value = this.valueMap.get(key);
-          final Set<SkTextInf> nodeSet = (Set<SkTextInf>) this.identityNameMap.get(key);
-          nodeSet.stream().parallel().forEach(
-              n -> n.setLeftSide(value)
-          );
+          final Object value = this.valueMap.get(key);
+          if (null != value) {
+            final Set<SkValueInf> nodeSet = (Set<SkValueInf>) this.identityNameMap.get(key);
+            nodeSet.stream().parallel().filter(n -> null != n).forEach(
+                n -> n.setLeftSide(value)
+            );
+          }
         });
 
     this.valueMapList.keySet().forEach(
         key -> {
-          final String value = this.valueMap.get(key);
-          final Set<SkTextInf> nodeSet = (Set<SkTextInf>) this.identityNameMap.get(key);
-          nodeSet.stream().parallel().forEach(
-              n -> n.addToLeftSideList(value)
-          );
+          final Object value = this.valueMap.get(key);
+          if (null != value) {
+            final Set<SkValueInf> nodeSet = (Set<SkValueInf>) this.identityNameMap.get(key);
+            nodeSet.stream().parallel().filter(n -> null != n).forEach(
+                n -> n.addToLeftSideList(value)
+            );
+          }
         });
   }
 

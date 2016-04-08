@@ -12,7 +12,7 @@
         },
         "description": "Source of milk(M): true if M containsOneOf ('farm', 'dairy', 'backyards') ",
         "operator": "CONTAINS_ONE_OF",
-        "text_list": [
+        "list": [
           "faRM",
           "dAIry",
           "backYaRds"

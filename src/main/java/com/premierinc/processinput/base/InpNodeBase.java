@@ -3,10 +3,7 @@ package com.premierinc.processinput.base;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.premierinc.common.util.JsonHelper;
-import com.premierinc.processinput.core.InpAndOr;
-import com.premierinc.processinput.core.InpGroup;
-import com.premierinc.processinput.core.InpNumeric;
-import com.premierinc.processinput.core.InpText;
+import com.premierinc.processinput.core.*;
 
 /**
  *
@@ -14,6 +11,7 @@ import com.premierinc.processinput.core.InpText;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({@JsonSubTypes.Type(value = InpNumeric.class, name = "numeric"),
     @JsonSubTypes.Type(value = InpText.class, name = "text"),
+    @JsonSubTypes.Type(value = InpDateTime.class, name = "datetime"),
     @JsonSubTypes.Type(value = InpAndOr.class, name = "andOr"),
     @JsonSubTypes.Type(value = InpGroup.class, name = "group")
 })

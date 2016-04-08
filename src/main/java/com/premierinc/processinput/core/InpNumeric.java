@@ -39,18 +39,8 @@ public class InpNumeric extends InpNodeBase {
    * This is the right side of the logic operation, a permanent value entered
    * with the original formula.
    */
-  @JsonProperty("numeric_value")
+  @JsonProperty("value")
   private BigDecimal rightNumericValue = null;
-
-  @JsonProperty("date_value")
-  private Date rightDateValue = null;
-
-  @JsonProperty("string_value")
-  private String rightStringValue = null;
-
-  @JsonProperty("string_list")
-  private List<String> rightStringList = null;
-
 
   /**
    *
@@ -65,18 +55,6 @@ public class InpNumeric extends InpNodeBase {
 
   public BigDecimal getRightNumericValue() {
     return rightNumericValue;
-  }
-
-  public Date getRightDateValue() {
-    return rightDateValue;
-  }
-
-  public List<String> getRightStringList() {
-    return rightStringList;
-  }
-
-  public String getRightStringValue() {
-    return rightStringValue;
   }
 
   public LogicOperatorEnum getOperator() {

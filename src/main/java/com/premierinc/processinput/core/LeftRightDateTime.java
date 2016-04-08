@@ -1,12 +1,8 @@
 package com.premierinc.processinput.core;
 
-import com.premierinc.common.enumeration.LogicOperatorEnum;
 import com.premierinc.common.exception.SkException;
 import com.premierinc.common.util.DateAdjuster;
 import org.joda.time.DateTime;
-
-import java.math.BigDecimal;
-import java.util.function.Predicate;
 
 /**
  *

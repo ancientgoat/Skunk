@@ -1,12 +1,14 @@
 package com.premierinc.processinput.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.premierinc.common.enumeration.LogicOperatorEnum;
+import com.premierinc.common.enumeration.DateTimeOperatorEnum;
+import com.premierinc.common.enumeration.DateTimeOperatorEnum;
 import com.premierinc.common.exception.SkException;
 import com.premierinc.common.util.DateAdjuster;
 import com.premierinc.common.util.DateTimeLogicExecuterHelper;
 import com.premierinc.processinput.base.DecisionIdentity;
 import com.premierinc.processinput.base.InpNodeBase;
+import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.function.Predicate;
@@ -22,7 +24,7 @@ import java.util.function.Predicate;
  */
 public class InpDateTime extends InpNodeBase {
 
-  private Predicate<LeftRightNumeric> predicate;
+  private Predicate<LeftRightDateTime> predicate;
 
   /**
    * Hopefully someone was smart enough to give a decent description of our Logic bit.
@@ -32,7 +34,7 @@ public class InpDateTime extends InpNodeBase {
   /**
    * Operator we are to apply to our logic bit.
    */
-  private LogicOperatorEnum operator;
+  private DateTimeOperatorEnum operator;
 
   /**
    *
@@ -44,7 +46,7 @@ public class InpDateTime extends InpNodeBase {
    * with the original formula.
    */
   @JsonProperty("value")
-  private BigDecimal rightNumericValue = null;
+  private Integer rightNumericValue = null;
 
   /**
    *
@@ -52,37 +54,41 @@ public class InpDateTime extends InpNodeBase {
   private DecisionIdentity identity;
 
   @JsonProperty
-  public void setOperator(final LogicOperatorEnum inOperator) {
+  public void setOperator(final DateTimeOperatorEnum inOperator) {
     this.operator = inOperator;
     this.predicate = DateTimeLogicExecuterHelper.buildPredicate(inOperator, dateAdjuster);
   }
 
-  public BigDecimal getRightDateTimeValue() {
+  public Integer getRightDateTimeValue() {
     return rightNumericValue;
   }
 
-  public LogicOperatorEnum getOperator() {
+  public DateTimeOperatorEnum getOperator() {
     return operator;
   }
 
-  public Predicate<LeftRightNumeric> getPredicate() {
+  public Predicate<LeftRightDateTime> getPredicate() {
     return predicate;
+  }
+
+  public DateAdjuster getDateAdjuster() {
+    return dateAdjuster;
   }
 
   /**
    * This was made purposely as a thread safe method.
    */
-  public final boolean test(final LeftRightNumeric inLeftRightNumeric) {
-    boolean result = this.predicate.test(inLeftRightNumeric);
-    // System.out.println(lastOutput(inLeftRightNumeric, result));
+  public final boolean test(final LeftRightDateTime inLeftRightDateTime) {
+    boolean result = this.predicate.test(inLeftRightDateTime);
+    // System.out.println(lastOutput(inLeftRightDateTime, result));
     return result;
   }
 
   /**
    * This was made purposely as a thread safe method.
    */
-  public boolean test(final BigDecimal inLeftValue) {
-    final LeftRightNumeric leftRightNumeric = new LeftRightNumeric(inLeftValue, this.rightNumericValue);
+  public boolean test(final DateTime inLeftValue) {
+    final LeftRightDateTime leftRightNumeric = new LeftRightDateTime(inLeftValue, this.dateAdjuster, this.rightNumericValue);
     return test(leftRightNumeric);
 
     // boolean result = this.predicate.test(leftRightNumeric);
@@ -90,9 +96,9 @@ public class InpDateTime extends InpNodeBase {
     // return result;
   }
 
-  public final String lastOutput(final LeftRightNumeric inLeftRightNumeric, final boolean inResult) {
-    return String.format("%s %s %s  Result: %s", inLeftRightNumeric.getLeftSide(), this.operator,
-        inLeftRightNumeric.getRightSide(), inResult);
+  public final String lastOutput(final LeftRightDateTime inLeftRightDateTime, final boolean inResult) {
+    return String.format("%s %s %s  Result: %s", inLeftRightDateTime.getLeftSide(), this.operator,
+        inLeftRightDateTime.getRightSide(), inResult);
   }
 
   public String getDescription() {

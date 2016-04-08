@@ -1,5 +1,6 @@
 package com.premierinc.processtree.decisiontree;
 
+import com.premierinc.common.exception.SkException;
 import com.premierinc.processinput.base.DecisionIdentity;
 import com.premierinc.processinput.core.InpText;
 import com.premierinc.processinput.core.LeftRightText;
@@ -18,6 +19,24 @@ public class SkTextNode implements SkTextInf {
 
   public SkTextNode(final InpText inInpText) {
     this.logicBit = inInpText;
+  }
+
+  @Override
+  public void setLeftSide(Object inValue) {
+    if (inValue instanceof String) {
+      setLeftSide((String) inValue);
+    } else {
+      throw new SkException(String.format("Expected type of String, got '%s'", leftSide.getClass().getName()));
+    }
+  }
+
+  @Override
+  public void addToLeftSideList(Object inValue) {
+    if (inValue instanceof String) {
+      addToLeftSideList((String) inValue);
+    } else {
+      throw new SkException(String.format("Expected type of String, got '%s'", leftSide.getClass().getName()));
+    }
   }
 
   @Override
@@ -58,6 +77,9 @@ public class SkTextNode implements SkTextInf {
 
   @Override
   public boolean test() {
-    return logicBit.test(this.leftSide);
+    if (null != this.leftSide) {
+      return logicBit.test(this.leftSide);
+    }
+    throw new SkException(String.format("leftSide for Identity '%s' is null.", this.getIdentity().getName()));
   }
 }

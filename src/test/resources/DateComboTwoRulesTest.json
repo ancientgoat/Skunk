@@ -3,7 +3,7 @@
     "name": "test01",
     "decisions": [
       {
-        "type": "text",
+        "type": "numeric",
         "identity": {
           "name": "MILK",
           "uom": "oz"
@@ -14,17 +14,17 @@
       },
       {
         "type": "andOr",
-        "operator": "OR"
+        "operator": "AND"
       },
       {
-        "type": "text",
+        "type": "datetime",
         "identity": {
-          "name": "ORANGE_JUICE",
-          "uom": "oz"
+          "name": "MILK_DATE"
         },
-        "description": "Amount of orange juice < 10 oz",
-        "operator": "LT",
-        "value": 22.22
+        "description": "Date Milk was milked >= 5 Days ago from now",
+        "operator": "GE",
+        "date_adjuster": "DAYS_AGO",
+        "value" : 5
       }
     ]
   }

@@ -1,0 +1,57 @@
+{
+  "decisionList": {
+    "name": "test01",
+    "decisions": [
+      {
+        "type": "numeric",
+        "identity": {
+          "name": "MILK",
+          "uom": "oz"
+        },
+        "description": "Amount of milk < 100.03 oz",
+        "operator": "LT",
+        "value": 100.03
+      },
+      {
+        "type": "andOr",
+        "operator": "AND"
+      },
+      {
+        "type": "group",
+        "name": "test01",
+        "decisions": [
+          {
+            "type": "text",
+            "identity": {
+              "name": "PARAGRAPH_MORE_OR_LESS_ABOUT_MILK",
+              "uom_base": {
+                "uomtype": "oz"
+              }
+            },
+            "description": "Source of milk(M): true if M containsOneOf ('farm', 'dairy', 'backyards') ",
+            "operator": "CONTAINS_ONE_OF",
+            "list": [
+              "faRM",
+              "dAIry",
+              "backYaRds"
+            ]
+          },
+          {
+            "type": "andOr",
+            "operator": "OR"
+          },
+          {
+            "type": "datetime",
+            "identity": {
+              "name": "MILK_DATE"
+            },
+            "description": "Date Milk was milked >= 5 Days ago from now",
+            "operator": "GE",
+            "date_adjuster": "DAYS_AGO",
+            "value": 5
+          }
+        ]
+      }
+    ]
+  }
+}

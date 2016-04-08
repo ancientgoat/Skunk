@@ -37,10 +37,10 @@ public class InpText extends InpNodeBase {
    * This is the right side of the logic operation, a permanent value entered
    * with the original formula.
    */
-  @JsonProperty("text_value")
+  @JsonProperty("value")
   private String rightTextValue = null;
 
-  @JsonProperty("text_list")
+  @JsonProperty("list")
   private List<String> rightTextList = null;
 
   /**

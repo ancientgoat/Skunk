@@ -5,12 +5,9 @@ import com.premierinc.processinput.base.InpNodeBase;
 import com.premierinc.processinput.core.*;
 import com.premierinc.processtree.decisioninf.SkAndOrInf;
 import com.premierinc.processtree.decisioninf.SkNodeInf;
-import com.premierinc.processtree.decisioninf.SkNumericInf;
 import com.premierinc.processtree.decisioninf.SkTextInf;
-import com.premierinc.processtree.decisiontree.SkAndOrNode;
-import com.premierinc.processtree.decisiontree.SkGroupNode;
-import com.premierinc.processtree.decisiontree.SkNumericNode;
-import com.premierinc.processtree.decisiontree.SkTextNode;
+import com.premierinc.processtree.decisioninf.SkValueInf;
+import com.premierinc.processtree.decisiontree.*;
 
 import java.util.*;
 
@@ -24,7 +21,7 @@ public class DecisionOrganizer {
 
   private final DecisionChain decisionChain;
   private final List<InpNodeBase> decisions;
-  private Map<String, Set<SkNodeInf>> identityNameMap = new HashMap<>();
+  private Map<String, Set<SkValueInf>> identityNameMap = new HashMap<>();
   private SkNodeInf topNode;
 
   public DecisionOrganizer(final DecisionChain inChain) {
@@ -85,7 +82,7 @@ public class DecisionOrganizer {
    * 1) Find and set the top level decision node for this list of Decisions.
    * 2) Organize the ndoe into a proper (suggested) execution order.
    */
-  private SkNodeInf processMoreThanOneDecision(final Map<String, Set<SkNodeInf>> identityNameMap,
+  private SkNodeInf processMoreThanOneDecision(final Map<String, Set<SkValueInf>> identityNameMap,
                                                final List<InpNodeBase> inDecisions) {
     SkNodeInf localTopNode = null;
     final Stack<SkAndOrInf> andOrStack = new Stack<>();
@@ -126,21 +123,21 @@ public class DecisionOrganizer {
   /**
    *
    */
-  private void populateIdentityWithNode(final Map<String, Set<SkNodeInf>> inIdentityNameMap, final SkNodeInf inNode) {
+  private void populateIdentityWithNode(final Map<String, Set<SkValueInf>> inIdentityNameMap, final SkNodeInf inNode) {
 
-    if (inNode instanceof SkTextInf) {
+    if (inNode instanceof SkValueInf) {
 
-      final String identityName = ((SkTextInf) inNode).getIdentity().getName();
+      final String identityName = ((SkValueInf) inNode).getIdentity().getName();
 
-      Set<SkNodeInf> nodeSet = inIdentityNameMap.get(identityName);
+      Set<SkValueInf> nodeSet = inIdentityNameMap.get(identityName);
       if (null == nodeSet) {
         nodeSet = new HashSet<>();
       }
 
-      if (inNode instanceof SkTextNode) {
-        nodeSet.add((SkTextNode) inNode);
+      if (inNode instanceof SkValueInf) {
+        nodeSet.add((SkValueInf) inNode);
       } else {
-        throw new SkException(String.format("Expected 'SkTextNode' but found '%s'",
+        throw new SkException(String.format("Expected 'SkValueInf' but found '%s'",
             inNode.getClass().getName()));
       }
 
@@ -162,7 +159,7 @@ public class DecisionOrganizer {
   /**
    *
    */
-  private SkNodeInf getLogicOrGroup(Map<String, Set<SkNodeInf>> inIdentityNameMap,
+  private SkNodeInf getLogicOrGroup(Map<String, Set<SkValueInf>> inIdentityNameMap,
                                     final InpNodeBase inNode) {
     if (inNode instanceof InpNumeric) {
 
@@ -171,6 +168,12 @@ public class DecisionOrganizer {
       return skNode;
 
     } else if (inNode instanceof InpText) {
+
+      SkNodeInf skNode = translateNode(inNode);
+      populateIdentityWithNode(inIdentityNameMap, skNode);
+      return skNode;
+
+    } else if (inNode instanceof InpDateTime) {
 
       SkNodeInf skNode = translateNode(inNode);
       populateIdentityWithNode(inIdentityNameMap, skNode);
@@ -201,6 +204,10 @@ public class DecisionOrganizer {
 
       return new SkTextNode((InpText) inNode);
 
+    } else if (inNode instanceof InpDateTime) {
+
+      return new SkDateTimeNode((InpDateTime) inNode);
+
     } else if (inNode instanceof InpGroup) {
 
       return new SkGroupNode((InpGroup) inNode);
@@ -230,7 +237,7 @@ public class DecisionOrganizer {
   /**
    *
    */
-  public Map<String, Set<SkNodeInf>> getIdentityNameMap() {
+  public Map<String, Set<SkValueInf>> getIdentityNameMap() {
     return this.identityNameMap;
   }
 

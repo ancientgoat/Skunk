@@ -1,5 +1,6 @@
 package com.premierinc.processtree.decisiontree;
 
+import com.premierinc.common.exception.SkException;
 import com.premierinc.processinput.base.DecisionIdentity;
 import com.premierinc.processinput.core.InpNumeric;
 import com.premierinc.processinput.core.LeftRightNumeric;
@@ -17,6 +18,20 @@ public class SkNumericNode implements SkNumericInf {
 
   public SkNumericNode(final InpNumeric inInpNumeric) {
     this.logicBit = inInpNumeric;
+  }
+
+  @Override
+  public void addToLeftSideList(Object inValue) {
+
+  }
+
+  @Override
+  public void setLeftSide(final Object leftSide) {
+    try {
+      setLeftSide(new BigDecimal(leftSide.toString()));
+    }catch(Exception e){
+      throw new SkException(String.format("Expected numeric type of some kind, but got '%s'", leftSide.getClass().getName()));
+    }
   }
 
   @Override
@@ -47,6 +62,11 @@ public class SkNumericNode implements SkNumericInf {
 
   @Override
   public boolean test() {
-    return logicBit.test(this.leftSide);
+    if (null != this.leftSide) {
+      return logicBit.test(this.leftSide);
+    }
+    throw new SkException(String.format("leftSide for Identity '%s' is null.", this.getIdentity().getName()));
+
   }
+
 }

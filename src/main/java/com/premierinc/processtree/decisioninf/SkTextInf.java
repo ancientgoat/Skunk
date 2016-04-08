@@ -10,10 +10,7 @@ import java.util.List;
 /**
  *
  */
-public interface SkTextInf extends SkNodeInf {
-  String getDescription();
-
-  DecisionIdentity getIdentity();
+public interface SkTextInf extends SkValueInf {
 
   void setLeftSide(final String leftSide);
 

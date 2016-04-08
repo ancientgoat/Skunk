@@ -1,0 +1,20 @@
+{
+  "decisionList": {
+    "name": "test01",
+    "decisions": [
+      {
+        "type": "datetime",
+        "identity": {
+          "name": "IS_MILK_GOOD",
+          "uom_base": {
+            "uomtype": "oz"
+          }
+        },
+        "description": "How old is good milk : true if Milk milked date >= now() - 5 days",
+        "operator": "GE",
+        "date_adjuster": "DAYS_AGO",
+        "value" : 5
+      }
+    ]
+  }
+}

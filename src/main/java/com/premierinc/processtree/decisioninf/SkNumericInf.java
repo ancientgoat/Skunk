@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 /**
  *
  */
-public interface SkNumericInf extends SkNodeInf {
+public interface SkNumericInf extends SkValueInf {
   String getDescription();
 
   DecisionIdentity getIdentity();
