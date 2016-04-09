@@ -1,0 +1,23 @@
+{
+  "decisionList": {
+    "name": "test01",
+    "decisions": [
+      {
+        "type": "numeric",
+        "identity": {
+          "short_name": "MILK",
+          "data_identity": "MILK_TABLE",
+          "alias": "amount_in_gallons",
+          "uom_base": {
+            "uomtype": "oz"
+          },
+          "uom_data": "GALLON",
+          "uom_value": "OZ"
+        },
+        "description": "Amount of milk(M): true if M > 1.33 oz",
+        "operator": "GT",
+        "value": 1.11
+      }
+    ]
+  }
+}

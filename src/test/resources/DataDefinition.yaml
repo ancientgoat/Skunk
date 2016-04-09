@@ -1,0 +1,53 @@
+# #################################
+# Data Definition
+# #################################
+- identity    : MILK_TABLE
+  data_source : TD_ORACLE
+  cache       :
+    duration_time : 10
+    duration_type : minutes
+  fields :
+    - column      : id
+      alias       : milk_id
+      data_type   : long
+    - column      : source
+      alias       : milk_source
+      data_type   : varchar
+      data_length : 32
+    - column      : milked_date
+      alias       : milked_date
+      data_type   : datetime
+    - column      : amount_in_gallons
+      alias       : amount_in_gallons
+      data_type   : integer
+  sql : |
+    SELECT  id
+    ,       source
+    ,       milked_date
+    ,       amount_in_gallons
+    FROM    MILK_TABLE
+
+
+- identity    : PET_TABLE
+  data_source : TD_ORACLE
+  cache       :
+    duration_time : 1
+    duration_type : day
+  fields :
+    - column      : id
+      alias       : pet_id
+      data_type   : long
+    - column      : name
+      alias       : pet_name
+      data_type   : varchar
+      data_length : 32
+    - column      : animal_type
+      alias       : animal_type
+      data_type   : varchar
+      data_length : 32
+  sql : |
+    SELECT  id
+    ,       name
+    ,       animal_type
+    FROM    PET_TABLE
+

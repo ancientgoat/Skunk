@@ -136,9 +136,15 @@ public class MyDateComboSimpleTest {
     try {
       final DecisionRunnerGeneric decisionRunner = buildRunnerFromFile(ONE_GROUP_TEST_FILE);
 
+      decisionRunner.setValue("PARAGRAPH_MORE_OR_LESS_ABOUT_MILK",
+          "This is a paragraph that may or may not have some words about milk.  But I do know this, and that is\n"
+              + " the world is ending.  Cats and Dogs are living in sin.  Grown men are running screaming through the\n"
+              + " streets.  Even small children have started in their backyards digging bunkers.\n"
+      );
+
       for (int i = maxStart; i < maxTests; i++) {
-        decisionRunner.addValueToList("MILK", "" + (i + 0.3));
-        decisionRunner.addValueToList("ORANGE_JUICE", "" + (i + 0.16));
+        decisionRunner.setValue("MILK", "" + (i + 0.3));
+        decisionRunner.setValue("MILK_DATE", DateTime.now().minusSeconds(i));
         Boolean trueOrFalse = decisionRunner.execute();
 
         countMap.put(trueOrFalse, 1 + countMap.get(trueOrFalse));
@@ -147,7 +153,9 @@ public class MyDateComboSimpleTest {
       throw new IllegalArgumentException(e);
     }
     timerStop("testOneGroupRepeatTest");
-    System.out.println(countMap);
+    System.out.println("================================");
+    System.out.println(String.format("Group results : %s", countMap));
+    System.out.println("================================");
   }
 
   private DecisionRunnerGeneric buildRunnerFromFile(final String filePath) throws IOException {
