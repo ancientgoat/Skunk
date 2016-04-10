@@ -3,7 +3,10 @@
 # #################################
 # Where does your milk come from?
 # #################################
-- identity    : MILK_TABLE
+- identity    :
+    source      : TD
+    name        : MILK_TABLE
+    short_name  : MILK_TABLE
   data_source : TD_ORACLE
   cache       :
     duration_time : 10
@@ -32,7 +35,10 @@
 # #################################
 # What kind of pet might you have?
 # #################################
-- identity    : PET_TABLE
+- identity    :
+    source      : TD
+    name        : PET_TABLE
+    short_name  : PET_TABLE
   data_source : TD_ORACLE
   cache       :
     duration_time : 1
@@ -58,7 +64,10 @@
 # #################################
 # What kind of pet drinks milk?
 # #################################
-- identity    : PET_MILK_TABLE
+- identity    :
+    source      : TD
+    name        : PET_MILK_TABLE
+    short_name  : PET_MILK_TABLE
   data_source : TD_ORACLE
   cache       :
     duration_time : 1
