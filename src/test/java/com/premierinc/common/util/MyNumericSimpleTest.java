@@ -36,7 +36,7 @@ public class MyNumericSimpleTest {
   private StopWatch stopwatch;
 
   /**
-   * Simple test that just reads in a Rule, that's all.
+   * Simple test that just reads in a rule, that's all.
    */
   @Test
   public void testReadFileTest() {

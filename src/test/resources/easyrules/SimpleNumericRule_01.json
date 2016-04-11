@@ -1,0 +1,15 @@
+{
+  "SkRuleBase": {
+    "name": "test01",
+    "type": "numeric",
+    "identity": {
+      "name": "MILK",
+      "uom_base": {
+        "uomtype": "oz"
+      }
+    },
+    "description": "Amount of milk(M): true if M > 1.11 oz",
+    "operator": "GT",
+    "value": 1.11
+  }
+}

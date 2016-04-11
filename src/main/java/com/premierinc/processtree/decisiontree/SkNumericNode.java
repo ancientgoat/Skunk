@@ -66,7 +66,5 @@ public class SkNumericNode implements SkNumericInf {
       return logicBit.test(this.leftSide);
     }
     throw new SkException(String.format("leftSide for Identity '%s' is null.", this.getIdentity().getName()));
-
   }
-
 }

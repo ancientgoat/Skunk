@@ -8,7 +8,7 @@ import java.util.List;
 /**
  *
  * --: Count Rules
- * --: Map Rule Value Types
+ * --: Map rule Value Types
  *
  */
 @JsonRootName(value="decisionList")

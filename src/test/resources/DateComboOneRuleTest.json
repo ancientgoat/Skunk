@@ -8,7 +8,8 @@
           "name": "IS_MILK_GOOD",
           "uom_base": {
             "uomtype": "oz"
-          }
+          },
+          "source":"PET_MILK_TABLE.milk_amount"
         },
         "description": "How old is good milk : true if Milk milked date >= now() - 5 days",
         "operator": "GE",
