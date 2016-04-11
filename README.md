@@ -1,5 +1,5 @@
 # JR
-### (Just Rules, JAMS little brother) 
+### (Just Rules)
 
 ## JR - This code is Part 2
 

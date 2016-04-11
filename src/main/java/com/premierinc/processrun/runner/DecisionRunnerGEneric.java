@@ -14,8 +14,6 @@ import java.util.*;
  */
 public class DecisionRunnerGeneric {
 
-  //private static Logger logger = new Logger(DecisionRunnerNumeric.class);
-
   private final DecisionOrganizer organizer;
   private final Map<String, Object> valueMap = new HashMap<>();
   private final Map<String, List<Object>> valueMapList = new HashMap<>();

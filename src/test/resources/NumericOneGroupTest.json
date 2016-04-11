@@ -26,7 +26,7 @@
               "name": "MILK",
               "uom": "oz"
             },
-            "description": "Amount of milk > 1.33 oz",
+            "description": "Amount of milk > 111111.33 oz",
             "operator": "GT",
             "value": 111111.33
           },

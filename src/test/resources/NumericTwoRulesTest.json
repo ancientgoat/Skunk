@@ -8,7 +8,7 @@
           "name": "MILK",
           "uom": "oz"
         },
-        "description": "Amount of milk > 1.33 oz",
+        "description": "Amount of milk > 2.22 oz",
         "operator": "GT",
         "value": 2.22
       },
@@ -22,7 +22,7 @@
           "name": "ORANGE_JUICE",
           "uom": "oz"
         },
-        "description": "Amount of orange juice < 10 oz",
+        "description": "Amount of orange juice < 22.22 oz",
         "operator": "LT",
         "value": 22.22
       }

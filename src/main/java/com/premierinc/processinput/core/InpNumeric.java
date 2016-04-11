@@ -70,7 +70,6 @@ public class InpNumeric extends InpNodeBase {
    */
   public final boolean test(final LeftRightNumeric inLeftRightNumeric) {
     boolean result = this.predicate.test(inLeftRightNumeric);
-    // System.out.println(lastOutput(inLeftRightNumeric, result));
     return result;
   }
 
@@ -80,9 +79,6 @@ public class InpNumeric extends InpNodeBase {
   public boolean test(final BigDecimal inLeftValue) {
     final LeftRightNumeric leftRightNumeric = new LeftRightNumeric(inLeftValue, this.rightNumericValue);
     return test(leftRightNumeric);
-    //boolean result = this.predicate.test(leftRightNumeric);
-    //System.out.println(lastOutput(leftRightNumeric, result));
-    //return result;
   }
 
   public final String lastOutput(final LeftRightNumeric inLeftRightNumeric, final boolean inResult) {
