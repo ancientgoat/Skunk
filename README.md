@@ -75,7 +75,8 @@ Keep in mind many of the ideas below don't even begin to pretend they are close 
 write data
 
 #### TODO
-  * Expressions
+  * Come up with a good way to reference Data Query datum in the Rules as Macros.
+  * Expressions (in json use "expression" in place of "value")
   * Choose a caching 3rd party tool (like EzCache?)
   * How do we carry common information from Rules and Actions into Data Queries.  For instance,
         when rules are for a specific patient, come up with a way to carry the Patient_Id
