@@ -1,0 +1,11 @@
+{
+  "rule": "MILK",
+  "andOr": "AND",
+  "rule": "ORANGE_JUICE",
+  "andOr": "OR",
+  "group": {
+    "rule": "MILK",
+    "andOr": "AND",
+    "rule": "ORANGE_JUICE"
+  }
+}

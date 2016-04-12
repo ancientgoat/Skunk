@@ -1,0 +1,13 @@
+{
+  "SkRuleBase": {
+    "name": "test01",
+    "type": "numeric",
+    "identity": {
+      "name": "ORANGE_JUICE",
+      "uom": "oz"
+    },
+    "description": "Amount of orange juice < 22.22 oz",
+    "operator": "LT",
+    "value": 22.22
+  }
+}

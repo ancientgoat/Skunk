@@ -6,7 +6,7 @@
 Keep in mind many of the ideas below don't even begin to pretend they are close in any way shape or form
     to being real.   They are just rather wild ideas - that I bet we can make work.
 
-#### Part 2 
+#### Part 2
 * Rules based on metadata
    * Rule parts have Identity(2) names
    * Rules/Groups of rules end up true or false.
@@ -72,7 +72,15 @@ Keep in mind many of the ideas below don't even begin to pretend they are close 
 
 #### DI
  What if the DI team could build Data Query metadata to pull data from client systems and use rules and alerts to 
-wirte data
-           
+write data
+
+#### TODO
+  * Expressions
+  * Choose a caching 3rd party tool (like EzCache?)
+  * How do we carry common information from Rules and Actions into Data Queries.  For instance,
+        when rules are for a specific patient, come up with a way to carry the Patient_Id
+        throughout the process.
+  * Will we be needing other information, besides Patients, to be carried throughout the rules/actions?
+
 
   

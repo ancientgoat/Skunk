@@ -1,0 +1,41 @@
+{
+  "actions": [
+    {
+      "action": {
+        "name": "AKI_STAGE_1_50%",
+        "message": "Stage 1 AKI based on 50% increase above reference SCr"
+      }
+    },
+    {
+      "action": {
+        "name": "AKI_STAGE_1_RISE",
+        "message": "Stage 1 AKI based on rapid rise in SCr"
+      }
+    },
+    {
+      "action": {
+        "name": "AKI_STAGE_2_200%",
+        "message": "Stage 2 AKI based on 200% increase above reference SCr"
+      }
+    },
+    {
+      "action": {
+        "name": "AKI_STAGE_3_300%",
+        "message": "Stage 3 AKI based on 300% increase above reference SCr"
+      }
+    },
+    {
+      "action": {
+        "name": "AKI_STAGE_3_ELEVATED",
+        "message": "Stage 3 AKI based on elevated SCr"
+      }
+    },
+    {
+      "action": {
+        "name": "NULL",
+        "message": "null Action - stop processing."
+      }
+    }
+  ]
+}
+
