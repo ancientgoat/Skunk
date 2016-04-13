@@ -4,8 +4,8 @@
   "rule": "ORANGE_JUICE",
   "andOr": "OR",
   "group": {
-    "rule": "MILK",
+    "rule": "MILK_02",
     "andOr": "AND",
-    "rule": "ORANGE_JUICE"
+    "rule": "ORANGE_JUICE_02"
   }
 }

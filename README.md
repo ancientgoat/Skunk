@@ -79,9 +79,10 @@ write data
   * Expressions (in json use "expression" in place of "value")
   * Choose a caching 3rd party tool (like EzCache?)
   * How do we carry common information from Rules and Actions into Data Queries.  For instance,
-        when rules are for a specific patient, come up with a way to carry the Patient_Id
+        when rules are for a specific Patient, come up with a way to carry the Patient_Id
         throughout the process.
   * Will we be needing other information, besides Patients, to be carried throughout the rules/actions?
+  * Add an "THEN" and "ELSE" to run Actions.  Running an Action may, or may not, stop the Rule execution process.
 
 
   
